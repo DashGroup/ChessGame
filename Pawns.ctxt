@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=
+comment0.target=boolean\ rules()
+comment1.params=
+comment1.target=boolean\ specialRules()
+comment2.params=
+comment2.target=boolean\ checkRules()
+comment3.params=
+comment3.target=boolean\ ifAlive()
+numComments=4
