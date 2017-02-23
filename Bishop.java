@@ -11,6 +11,9 @@ public class Bishop extends Chesspieces
     public boolean specialRules(){
         return true;
     }
+    public boolean checkRules(){
+        return true;
+    }
     public boolean ifAlive(){
         return true;
     }
