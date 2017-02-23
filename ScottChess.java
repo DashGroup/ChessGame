@@ -11,7 +11,7 @@ public class ScottChess
     private int x;
 
     /**
-     * Constructor for objects of class ScottChess
+     * Constructor asdfasdfasdfasdfasdfasddfasdfasdfasdffor objects of class ScottChess
      */
     public ScottChess()
     {
