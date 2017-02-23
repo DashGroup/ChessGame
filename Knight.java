@@ -2,7 +2,7 @@ public class Knight extends Chesspieces
 {
     private String name = "knight";
     private String[] position;
-    private boolean alive;
+    private boolean[] alive;
     private boolean ifMove;
     private int numCount;
     public boolean rules(){
@@ -12,6 +12,6 @@ public class Knight extends Chesspieces
         return true;
     }
     public boolean ifAlive(){
-        return alive;
+        return true;
     }
 }
