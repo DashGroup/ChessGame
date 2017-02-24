@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 public class Board
 {
     private Player playerWhite;
@@ -198,3 +199,10 @@ public class Board
         return str;
     }
 }
+=======
+public class Board
+{
+    private Player playerWhite;
+    private Player playerBlack;
+}
+>>>>>>> origin/master

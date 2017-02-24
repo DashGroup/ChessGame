@@ -9,10 +9,13 @@ public class Rook extends Pieces
     public boolean checkRules(){
         return true;
     }
+<<<<<<< HEAD
     public String getPosition(){
         return position;
     }
     public void setPosition(String input){
         position = input;
     }
+=======
+>>>>>>> origin/master
 }
