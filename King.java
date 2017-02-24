@@ -1,10 +1,5 @@
-public class King extends Chesspieces
+public class King extends Pieces
 {
-    private String[] name;
-    private String[] position;
-    private boolean[] alive;
-    private boolean[] ifMove;
-    private int numCount;
     public boolean rules(){
         return true;
     }
@@ -14,7 +9,10 @@ public class King extends Chesspieces
     public boolean checkRules(){
         return true;
     }
-    public boolean ifAlive(){
-        return true;
+    public String getPosition(){
+        return position;
+    }
+    public void setPosition(String input){
+        position = input;
     }
 }
