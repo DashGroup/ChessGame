@@ -1,10 +1,5 @@
-public class Pawns extends Chesspieces
+public class Pawns extends Pieces
 {
-    private String[] name;
-    private String[] position;
-    private boolean[] alive;
-    private boolean[] ifMove;
-    private int numCount;
     public boolean rules(){
         return true;
     }
@@ -12,9 +7,6 @@ public class Pawns extends Chesspieces
         return true;
     }
     public boolean checkRules(){
-        return true;
-    }
-    public boolean ifAlive(){
         return true;
     }
 }

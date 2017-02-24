@@ -1,10 +1,5 @@
-public class Rook extends Chesspieces
+public class Rook extends Pieces
 {
-    private String[] name;
-    private String[] position;
-    private boolean[] alive;
-    private boolean[] ifMove;
-    private int numCount;
     public boolean rules(){
         return true;
     }
@@ -12,9 +7,6 @@ public class Rook extends Chesspieces
         return true;
     }
     public boolean checkRules(){
-        return true;
-    }
-    public boolean ifAlive(){
         return true;
     }
 }
