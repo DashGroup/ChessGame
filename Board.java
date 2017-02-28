@@ -5,8 +5,13 @@ public class Board
     private String[][] board;
     private final int length = 8;
     private static int time;
+    public PieceGroup getWhite(){
+        return this.white;
+    }
+    public PieceGroup getBlack(){
+        return this.black;
+    }
     Board(){
-        System.out.println("FORMAT"+"GOTO 'A1,A2' "+"OR"+" 'QUIT' ONLY");
         white = new PieceGroup("white");
         black = new PieceGroup("black");
         board = new String[length][length];
@@ -39,62 +44,34 @@ public class Board
             }        
         }
     }
-    private int convertThirdToNum(String order){
-        String str = order.substring(9);
-        if(str.equalsIgnoreCase("1")){return 7;}
-        else if(str.equalsIgnoreCase("2")){return 6;}
-        else if(str.equalsIgnoreCase("3")){return 5;}
-        else if(str.equalsIgnoreCase("4")){return 4;}
-        else if(str.equalsIgnoreCase("5")){return 3;}
-        else if(str.equalsIgnoreCase("6")){return 2;}
-        else if(str.equalsIgnoreCase("7")){return 1;}
-        else{return 0;}
+    private int convertThirdToNum2(String order){
+        String str = order.substring(2,3);
+        return Integer.valueOf(str);
     }
-    private int convertSecondToNum(String order){
-        String str = order.substring(6,7);
-        if(str.equalsIgnoreCase("1")){return 7;}
-        else if(str.equalsIgnoreCase("2")){return 6;}
-        else if(str.equalsIgnoreCase("3")){return 5;}
-        else if(str.equalsIgnoreCase("4")){return 4;}
-        else if(str.equalsIgnoreCase("5")){return 3;}
-        else if(str.equalsIgnoreCase("6")){return 2;}
-        else if(str.equalsIgnoreCase("7")){return 1;}
-        else{return 0;}
+    private int convertFirstToNum2(String order){
+        String str = order.substring(0,1);
+        return Integer.valueOf(str);
     }
-    private int convertFirstToNum(String order){
-        String str = order.substring(5,6);
-        if(str.equalsIgnoreCase("A")){return 0;}
-        else if(str.equalsIgnoreCase("B")){return 1;}
-        else if(str.equalsIgnoreCase("C")){return 2;}
-        else if(str.equalsIgnoreCase("D")){return 3;}
-        else if(str.equalsIgnoreCase("E")){return 4;}
-        else if(str.equalsIgnoreCase("F")){return 5;}
-        else if(str.equalsIgnoreCase("G")){return 6;}
-        else{return 7;}
+    private int convertSecondToNum2(String order){
+        String str = order.substring(1,2);
+        return Integer.valueOf(str);
     }
-    private int convertFourToNum(String order){
-        String str = order.substring(8,9);
-        if(str.equalsIgnoreCase("A")){return 0;}
-        else if(str.equalsIgnoreCase("B")){return 1;}
-        else if(str.equalsIgnoreCase("C")){return 2;}
-        else if(str.equalsIgnoreCase("D")){return 3;}
-        else if(str.equalsIgnoreCase("E")){return 4;}
-        else if(str.equalsIgnoreCase("F")){return 5;}
-        else if(str.equalsIgnoreCase("G")){return 6;}
-        else{return 7;}
+    private int convertFourToNum2(String order){
+        String str = order.substring(3,4);
+        return Integer.valueOf(str);
     }
     private boolean ifOdd(){
         return time%2!=0;
     }
-    public void main(String order){     
-        if(order.length()!=10){
+    public void run(String order){     
+        if(order.length()!=4){
             return;
         }
-        int first = convertSecondToNum(order);
-        int second = convertFirstToNum(order);
-        int third = convertThirdToNum(order);
-        int four = convertFourToNum(order);
-        order = first+""+second+third+four;
+        int first = convertFirstToNum2(order);
+        int second = convertSecondToNum2(order);
+        int third = convertThirdToNum2(order);
+        int four = convertFourToNum2(order);
+        order = ""+first+second+third+four;
         if(ifOdd()){
             if(board[third][four]=="   "){
                 String str = white.moveOne(order);
