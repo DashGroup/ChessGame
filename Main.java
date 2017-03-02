@@ -2,7 +2,7 @@ import java.util.Scanner;
 public class Main
 {
     public static void main(){
-        System.out.println("FORMAT: 'GOTO A1,A2' or 'QUIT' only!");
+        System.out.println("FORMAT: ‘GOTO A1,A2’ or ‘QUIT’ only!");
         System.out.println();
         Game game = new Game();
         Scanner in = new Scanner(System.in);

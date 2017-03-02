@@ -32,11 +32,34 @@ public class PieceGroup
         String second = position.substring(2);
         int index = positions.indexOf(first);
         if(index!=-1){
+            String str = reverseChange(second);
+            pieces.get(index).setPosition(str);
             positions.set(index,second);
             String name = names.get(index);
             return name;
         }   
         return "wrong";
+    }
+    private String reverseChange(String str){
+        String str1 = str.substring(0,1);
+        String str2 = str.substring(1,2);
+        if(str1.equals("7")){str1 = "1";}
+        else if(str1.equals("6")){str1 = "2";}
+        else if(str1.equals("5")){str1 = "3";}
+        else if(str1.equals("4")){str1 = "4";}
+        else if(str1.equals("3")){str1 = "5";}
+        else if(str1.equals("2")){str1 = "6";}
+        else if(str1.equals("1")){str1 = "7";}
+        else if(str1.equals("0")){str1 = "8";}
+        if(str2.equals("0")){str2 = "A";}
+        else if(str2.equals("1")){str2 = "B";}
+        else if(str2.equals("2")){str2 = "C";}
+        else if(str2.equals("3")){str2 = "D";}
+        else if(str2.equals("4")){str2 = "E";}
+        else if(str2.equals("5")){str2 = "F";}
+        else if(str2.equals("6")){str2 = "G";}
+        else if(str2.equals("7")){str2 = "H";}
+        return str2+str1;
     }
     PieceGroup(String input){
         if(input.equals ("white")){

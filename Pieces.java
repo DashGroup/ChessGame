@@ -7,5 +7,6 @@ public abstract class Pieces
     public abstract boolean rules();
     public abstract boolean specialRules();
     public abstract boolean checkRules();
+    public abstract void setPosition(String str);
     public boolean ifAlive(){return true;}
 }
