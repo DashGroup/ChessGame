@@ -25,7 +25,9 @@ public class Game
         board.run(order);
         time = board.getTime();
     }
-        private int convertThirdToNum(String order){
+    private int convertThirdToNum(String order){
+        if(order.length()!=10)
+            return -1;
         String str = order.substring(9);
         if(str.equalsIgnoreCase("1")){return 7;}
         else if(str.equalsIgnoreCase("2")){return 6;}
@@ -37,6 +39,8 @@ public class Game
         else{return 0;}
     }
     private int convertFirstToNum(String order){
+        if(order.length()!=10)
+            return -1;
         String str = order.substring(6,7);
         if(str.equalsIgnoreCase("1")){return 7;}
         else if(str.equalsIgnoreCase("2")){return 6;}
@@ -48,6 +52,8 @@ public class Game
         else{return 0;}
     }
     private int convertSecondToNum(String order){
+        if(order.length()!=10)
+            return -1;
         String str = order.substring(5,6);
         if(str.equalsIgnoreCase("A")){return 0;}
         else if(str.equalsIgnoreCase("B")){return 1;}
@@ -59,6 +65,8 @@ public class Game
         else{return 7;}
     }
     private int convertFourToNum(String order){
+        if(order.length()!=10)
+            return -1;
         String str = order.substring(8,9);
         if(str.equalsIgnoreCase("A")){return 0;}
         else if(str.equalsIgnoreCase("B")){return 1;}
