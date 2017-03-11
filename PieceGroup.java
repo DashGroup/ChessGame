@@ -17,8 +17,8 @@ public class PieceGroup
     protected Pawns pawns6 = new Pawns();
     protected Pawns pawns7 = new Pawns();
     protected Pawns pawns8 = new Pawns();
-    public static int count ;
-    public static String turn;
+    private int count ;
+    private static String turn;
     PieceGroup(String input){
         if(input.equals ("white")){
             knight1.setProperty("B1","WKT",knight1,"white");
@@ -59,24 +59,46 @@ public class PieceGroup
         count=1;
         turn = "white";
     }
+    public static String getTurn(){
+        return turn;
+    }
     public void run(String command){
         String[] arr=disposeString(command);
         int[] coordination1=rook1.convertor(arr[0]);
         int[] coordination2=rook1.convertor(arr[1]);//coordination
         String colorRequirement="";
+        String antiColorRequirement="";
         if(count%2==0){
           colorRequirement="black";  
+          antiColorRequirement = "white";
         }
         else{
           colorRequirement="white";
+          antiColorRequirement = "black";
         }
-        if(Board.board[coordination2[0]][coordination2[1]]==null&&
-           Board.board[coordination1[0]][coordination1[1]]!=null&&
-           Board.board[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
-           Pieces temp=Board.board[coordination2[0]][coordination2[1]];
-           Board.board[coordination2[0]][coordination2[1]]=Board.board[coordination1[0]][coordination1[1]];
-           Board.board[coordination1[0]][coordination1[1]]=null;
-           count++;
+        if(Board.getBoard()[coordination2[0]][coordination2[1]]==null&&
+           Board.getBoard()[coordination1[0]][coordination1[1]]!=null&&
+           Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
+           if(Board.getBoard()[coordination1[0]][coordination1[1]].ifAllowedToMove(coordination2)){
+               Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
+               Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
+               Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
+               Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+               count++;
+           }
+        }
+        else if((Board.getBoard()[coordination2[0]][coordination2[1]]!=null)&&
+            Board.getBoard()[coordination2[0]][coordination2[1]].color.equals(antiColorRequirement)&&
+            Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
+            if(Board.getBoard()[coordination1[0]][coordination1[1]].ifAllowedToMove(coordination2)){
+                Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
+                Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
+                Board.getBoard()[coordination2[0]][coordination2[1]]=null;
+                Board.getBoard()[coordination2[0]][coordination2[1]]=null;
+                Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
+                Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+                count++;
+            }
         }
         if(count%2==0){
           turn="black";  

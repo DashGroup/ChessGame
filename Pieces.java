@@ -6,28 +6,20 @@ public abstract class Pieces
     protected boolean alive;
     protected boolean ifMove;
     protected int numCount;
-    public abstract boolean rules();
-    public abstract boolean specialRules();
-    public abstract boolean checkRules();
+    public abstract boolean rules(int[] command);
+    public abstract boolean specialRules(int[] command);
+    public abstract boolean ifAllowedToMove(int[] command);
     public boolean ifAlive(){return true;}
     public int[] convertor(String position){
-       int[] arr = new int[2];
-        if(position.substring(1,2).equalsIgnoreCase("8")){arr[0]=0;}
-        else if(position.substring(1,2).equalsIgnoreCase("7")){arr[0]=1;}
-        else if(position.substring(1,2).equalsIgnoreCase("6")){arr[0]=2;}
-        else if(position.substring(1,2).equalsIgnoreCase("5")){arr[0]=3;}
-        else if(position.substring(1,2).equalsIgnoreCase("4")){arr[0]=4;}
-        else if(position.substring(1,2).equalsIgnoreCase("3")){arr[0]=5;}
-        else if(position.substring(1,2).equalsIgnoreCase("2")){arr[0]=6;}
-        else if(position.substring(1,2).equalsIgnoreCase("1")){arr[0]=7;}
-                if(position.substring(0,1).equalsIgnoreCase("A")){arr[1]=0;}
-        else if(position.substring(0,1).equalsIgnoreCase("B")){arr[1]=1;}
-        else if(position.substring(0,1).equalsIgnoreCase("C")){arr[1]=2;}
-        else if(position.substring(0,1).equalsIgnoreCase("D")){arr[1]=3;}
-        else if(position.substring(0,1).equalsIgnoreCase("E")){arr[1]=4;}
-        else if(position.substring(0,1).equalsIgnoreCase("F")){arr[1]=5;}
-        else if(position.substring(0,1).equalsIgnoreCase("G")){arr[1]=6;}
-        else if( position.substring(0,1).equalsIgnoreCase("H")){arr[1]=7;}
+        int[] arr = new int[2];
+        int first = position.charAt(0);
+        if(first>=65&&first<=72)
+        first = first-65;
+        else if(first>=97&&first<=104)
+        first = first-97;
+        int second = 8-Integer.valueOf(position.substring(1,2));
+        arr[0] = second;
+        arr[1] = first;
         return arr;
     }
 

@@ -10,7 +10,7 @@ public class Game
         String black = "Black";
         pWhite = new Player(white);
         pBlack = new Player(black);
-        turn = PieceGroup.turn;
+        turn = PieceGroup.getTurn();
     }
     public Player checkTurn(){
         if(turn.equals("white")){
@@ -22,7 +22,7 @@ public class Game
     }
     public void run(String command){
         board.run(command);
-        turn = PieceGroup.turn;
+        turn = PieceGroup.getTurn();
     }
     public String toString(){
         String str = board.toString();

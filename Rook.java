@@ -1,18 +1,18 @@
 public class Rook extends Pieces
 {
-    public boolean rules(){
+    public boolean rules(int[] command){
         return true;
     }
-    public boolean specialRules(){
+    public boolean specialRules(int[] command){
         return true;
     }
-    public boolean checkRules(){
+    public boolean ifAllowedToMove(int[] command){
         return true;
     }
     public void setProperty(String input,String name,Pieces piece,String color){
         position=convertor(input);
         this.name=name;
-        Board.board[position[0]][position[1]]=piece;
+        Board.getBoard()[position[0]][position[1]]=piece;
         this.color=color;
     }
 }
