@@ -4,9 +4,7 @@ public class Knight extends Pieces
         boolean check = false;
         double i = Math.pow(command[0]-position[0],2)+Math.pow(command[1]-position[1],2);
         //check if the square of y displacement plus the square of x displacement is equals 5
-        if(i==5){
-            check = true;
-        }
+        if(i==5){check = true;}
         return check;
     }
     public boolean specialRules(int[] command){
@@ -15,16 +13,10 @@ public class Knight extends Pieces
     }
     public boolean ifAllowedToMove(int[] command){
         boolean check = false;
-        if(rules(command)){
-            check = true;
-            
-        }
-        if(specialRules(command)){
-            check = true;
-        }
+        if(rules(command)){check = true;}
+        if(specialRules(command)){check = true;}
         return check;
-    }
-    
+    }   
        public void setProperty(String input,String name,Pieces piece,String color){
         position=convertor(input);
         this.name=name;
