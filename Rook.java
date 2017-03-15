@@ -25,14 +25,17 @@ public class Rook extends Pieces
         boolean checkForReturn = true;
         boolean check = true;
         int index = position[0]+addIndex;   
-        System.out.println(index);
         while(check){
             if(Board.getBoard()[index][command[1]]!=null){
                 checkForReturn = false;
                 check = false;
             }
-            index+=addIndex;
+            if(index==command[0]){
+                if(Board.getBoard()[command[0]][command[1]]!=null&&
+                !Board.getBoard()[command[0]][command[1]].color.equals(color)){checkForReturn = true;}
+            }
             if(index==command[0]){check = false;}
+            index+=addIndex;
         }
         return checkForReturn;
     }
@@ -45,8 +48,12 @@ public class Rook extends Pieces
                 checkForReturn = false;
                 check = false;
             }
-            index+=addIndex;
+            if(index==command[1]){
+                if(Board.getBoard()[command[0]][command[1]]!=null&&
+                !Board.getBoard()[command[0]][command[1]].color.equals(color)){checkForReturn = true;}
+            }
             if(index==command[0]){check = false;}
+            index+=addIndex;
         }
         return checkForReturn;
     }
