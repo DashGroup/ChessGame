@@ -5,9 +5,9 @@ public abstract class Pieces
     protected String color;
     protected boolean alive;
     protected boolean ifMove;
-    protected int numCount;
+    protected int movementNumCount;
     public abstract boolean rules(int[] command);
-    public abstract boolean specialRules(int[] command);
+    public abstract boolean exceptionalRules(int[] command);
     public abstract boolean ifAllowedToMove(int[] command);
     public boolean ifAlive(){return true;}
     public int[] convertor(String position){

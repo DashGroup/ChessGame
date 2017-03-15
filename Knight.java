@@ -7,14 +7,15 @@ public class Knight extends Pieces
         if(displacement==5){check = true;}
         return check;
     }
-    public boolean specialRules(int[] command){//no special rules
+    public boolean exceptionalRules(int[] command){//no special rules
         boolean check = false;
         return check;
     }
     public boolean ifAllowedToMove(int[] command){//check both rules, if any one could move, then is allowed to move
         boolean check = false;
         if(rules(command)){check = true;}
-        if(specialRules(command)){check = true;}
+        if(exceptionalRules(command)){check = true;}
+        if(check == true){movementNumCount++;}
         return check;
     }   
     public void setProperty(String input,String name,Pieces piece,String color){//initializing

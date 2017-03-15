@@ -30,36 +30,35 @@ public class Pawns extends Pieces
         }              
         return check;
     }
-    public boolean specialRules(int[] command){//the first arr;
+    public boolean exceptionalRules(int[] command){//the second arr;
         boolean check = false;
         if(color.equalsIgnoreCase("white")){
             if(position[0]==6){
                 if(command[1]==position[1]){//first move
                     if(command[0]+2==position[0]&&Board.getBoard()[command[0]+1][command[1]]==null){
                         check = true;
+                        
                     }
                 }
             }
         }
         else if(color.equalsIgnoreCase("black")){//first move
-            if(command[1]==position[1]){
-                if(position[0]==1){
-                    if(command[0]-2==position[0]&&Board.getBoard()[command[0]+1][command[1]]==null){
+            if(position[0]==1){
+                if(command[1]==position[1]){
+                    if(command[0]-2==position[0]&&Board.getBoard()[command[0]-1][command[1]]==null){
                         check = true;
+                        
                     }
                 }
-            }
+            }            
         }
         return check;
     }
     public boolean ifAllowedToMove(int[] command){
         boolean check = false;
-        if(rules(command)){
-            check = true;
-        }
-        if(specialRules(command)){
-            check = true;
-        }
+        if(rules(command)){check = true;}
+        if(exceptionalRules(command)){check = true;}
+        if(check == true){movementNumCount++;}
         return check;
     }
     public void setProperty(String input,String name,Pieces piece,String color){

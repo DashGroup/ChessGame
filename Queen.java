@@ -3,10 +3,12 @@ public class Queen extends Pieces
     public boolean rules(int[] command){
         return true;
     }
-    public boolean specialRules(int[] command){
+    public boolean exceptionalRules(int[] command){
         return true;
     }
     public boolean ifAllowedToMove(int[] command){
+        boolean check = false;
+        if(check == true){movementNumCount++;}
         return true;
     }
     public void setProperty(String input,String name,Pieces piece,String color){
