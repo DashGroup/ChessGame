@@ -7,29 +7,19 @@ public class Bishop extends Pieces
         if(distanceUpAndDown==distanceLeftAndRight){return isBlocked(command);}
         return false;
     }
-    private int calculateUnitRow(int command[]){
-        int unitRow;
-        if(command[0]>position[0]){
-            unitRow=-1;
+    private int calculateUnitRowOrColumn(int command[], int i){
+        int unit;
+        if(command[i]>position[i]){
+            unit = -1;
         }
         else{
-            unitRow=1;
+            unit = 1;
         }
-        return unitRow;
-    }
-    private int calculateUnitColumn(int command[]){
-        int unitColumn;
-        if(command[1]>position[1]){
-            unitColumn=-1;
-        }
-        else{
-            unitColumn=1;
-        }
-        return unitColumn;
+        return unit;
     }
     private boolean isBlocked(int command[]){
-        int unitRow = calculateUnitRow(command);
-        int unitColumn = calculateUnitColumn(command);
+        int unitRow = calculateUnitRowOrColumn(command,0);
+        int unitColumn = calculateUnitRowOrColumn(command,1);
         boolean checkForReturn=true;
         int row=command[0];
         int column=command[1];
