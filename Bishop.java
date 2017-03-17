@@ -2,9 +2,9 @@ public class Bishop extends Pieces
 {   
     //if moving diagonally
     public boolean followsBasicRules(int[] command){
-        int distanceUpAndDown =  Math.abs(command[0]- position[0]);
-        int distanceLeftAndRight =  Math.abs(command[1]- position[1]);
-        if(distanceUpAndDown==distanceLeftAndRight){return isBlocked(command);}
+        int vertical =  Math.abs(command[0]- position[0]);
+        int horizontal =  Math.abs(command[1]- position[1]);
+        if(vertical==horizontal){return isBlocked(command);}
         return false;
     }
     private int calculateUnitRowOrColumn(int command[], int i){
