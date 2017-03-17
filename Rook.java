@@ -1,26 +1,29 @@
 public class Rook extends Pieces
 {
-    public boolean rules(int[] command){//check if the command is correct to move
+    //check if the command is correct to move up down or right left
+    public boolean followsBasicRules(int[] command){
         boolean check = false;
-        if(command[1]==position[1]){check = ifNotBlockedByAnotherPiece(command,0);}
-        else if(command[0]==position[0]){check = ifNotBlockedByAnotherPiece(command,1);}
+        if(command[1]==position[1]){check = isNotBlockedByAnotherPieceUpOrDown(command);}
+        else if(command[0]==position[0]){check = isNotBlockedByAnotherPieceRightOrLeft(command);}
         return check;
     }
-    private boolean ifNotBlockedByAnotherPiece(int[] command,int upDownOrRightLeft){//No block ==> true
+    private boolean isNotBlockedByAnotherPieceUpOrDown(int[] command){//No block ==> true
         boolean check = false;
         int addIndex = 0;
-        if(upDownOrRightLeft==0){
-            if(command[0]<position[0]){addIndex = -1;}
-            else{addIndex = 1;}
-            check = checkBlockedHelperUpOrDown(command,addIndex);
-        }   
-        else if(upDownOrRightLeft==1){
-            if(command[1]>position[1]){addIndex = 1;}
-            else{addIndex = -1;}
-            check = checkBlockedHelperRightOrLeft(command,addIndex);
-        }
+        if(command[0]<position[0]){addIndex = -1;}
+        else{addIndex = 1;}
+        check = checkBlockedHelperUpOrDown(command,addIndex);
         return check;
     }
+    private boolean isNotBlockedByAnotherPieceRightOrLeft(int[] command){
+        boolean check = false;
+        int addIndex = 0;
+        if(command[1]>position[1]){addIndex = 1;}
+        else{addIndex = -1;}
+        check = checkBlockedHelperRightOrLeft(command,addIndex);
+        return check;
+    }
+    //return true if no blocked or when tested to the end index to check if the blocked one is with different color
     private boolean checkBlockedHelperUpOrDown(int[] command, int addIndex){
         boolean checkForReturn = true;
         boolean check = true;
@@ -31,10 +34,10 @@ public class Rook extends Pieces
                 check = false;
             }
             if(index==command[0]){
+                check = false;
                 if(Board.getBoard()[command[0]][command[1]]!=null&&
                 !Board.getBoard()[command[0]][command[1]].color.equals(color)){checkForReturn = true;}
             }
-            if(index==command[0]){check = false;}
             index+=addIndex;
         }
         return checkForReturn;
@@ -49,23 +52,17 @@ public class Rook extends Pieces
                 check = false;
             }
             if(index==command[1]){
+                check = false;
                 if(Board.getBoard()[command[0]][command[1]]!=null&&
-                !Board.getBoard()[command[0]][command[1]].color.equals(color)){checkForReturn = true;}
+                !Board.getBoard()[command[0]][command[1]].color.equals(color)){checkForReturn = true;}    
             }
-            if(index==command[0]){check = false;}
             index+=addIndex;
         }
         return checkForReturn;
     }
-    public boolean exceptionalRules(int[] command){//no exceptionalRules for rook
+    //no exceptionalRules for rook
+    public boolean followsExceptionalRules(int[] command){
         return false;
-    }
-    public boolean ifAllowedToMove(int[] command){//check both if anyone 
-        boolean check = false;
-        if(rules(command)==true){check = true;}
-        if(exceptionalRules(command)==true){check = true;}
-        if(check == true){movementNumCount++;}
-        return check;
     }
     public void setProperty(String input,String name,Pieces piece,String color){
         position=convertor(input);

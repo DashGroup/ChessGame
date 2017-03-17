@@ -1,6 +1,7 @@
 public class Pawns extends Pieces
 {
-    public boolean rules(int[] command){//the second arr;
+    // if moving one step forward or eating anyone diagnally
+    public boolean followsBasicRules(int[] command){
         boolean check = false;
         if(color.equalsIgnoreCase("white")){
             if(command[1]==position[1]){
@@ -30,7 +31,8 @@ public class Pawns extends Pieces
         }              
         return check;
     }
-    public boolean exceptionalRules(int[] command){//the second arr;
+    //if not moved before, then check if the command is to ask the piece to move two step forward
+    public boolean followsExceptionalRules(int[] command){//the second arr;
         boolean check = false;
         if(color.equalsIgnoreCase("white")){
             if(position[0]==6){
@@ -54,13 +56,7 @@ public class Pawns extends Pieces
         }
         return check;
     }
-    public boolean ifAllowedToMove(int[] command){
-        boolean check = false;
-        if(rules(command)){check = true;}
-        if(exceptionalRules(command)){check = true;}
-        if(check == true){movementNumCount++;}
-        return check;
-    }
+
     public void setProperty(String input,String name,Pieces piece,String color){
         position=convertor(input);
         this.name=name;

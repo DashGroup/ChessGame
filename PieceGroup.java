@@ -79,7 +79,7 @@ public class PieceGroup
         if(Board.getBoard()[coordination2[0]][coordination2[1]]==null&&
            Board.getBoard()[coordination1[0]][coordination1[1]]!=null&&
            Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
-           if(Board.getBoard()[coordination1[0]][coordination1[1]].ifAllowedToMove(coordination2)){
+           if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)){
                Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
                Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
                Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
@@ -90,7 +90,7 @@ public class PieceGroup
         else if((Board.getBoard()[coordination2[0]][coordination2[1]]!=null)&&
             Board.getBoard()[coordination2[0]][coordination2[1]].color.equals(antiColorRequirement)&&
             Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
-            if(Board.getBoard()[coordination1[0]][coordination1[1]].ifAllowedToMove(coordination2)){
+            if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)){
                 Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
                 Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
                 Board.getBoard()[coordination2[0]][coordination2[1]]=null;

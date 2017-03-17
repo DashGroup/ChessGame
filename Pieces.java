@@ -6,9 +6,21 @@ public abstract class Pieces
     protected boolean alive;
     protected boolean ifMove;
     protected int movementNumCount;
-    public abstract boolean rules(int[] command);
-    public abstract boolean exceptionalRules(int[] command);
-    public abstract boolean ifAllowedToMove(int[] command);
+    public abstract boolean followsBasicRules(int[] command);
+    public abstract boolean followsExceptionalRules(int[] command);
+    public  boolean isAllowedToMove(int[] command){
+        boolean check=false;
+        if(followsBasicRules(command)){
+            check=true;
+        }
+        else if(followsExceptionalRules(command)){
+            check = true;
+        }
+        if(check==true){
+            movementNumCount++;
+        }
+        return check;
+    }
     public boolean ifAlive(){return true;}
     public int[] convertor(String position){
         int[] arr = new int[2];
