@@ -1,6 +1,6 @@
 public class Bishop extends Pieces
 {   
-    //if moving diagonally
+    //if moving diagonally, if so, then check if blocked
     public boolean followsBasicRules(int[] command){
         int verticalDistance =  Math.abs(command[0]- position[0]);
         int horizontalDistance =  Math.abs(command[1]- position[1]);

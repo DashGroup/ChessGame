@@ -21,6 +21,10 @@ public abstract class Pieces
         }
         return check;
     }
+    public void setPosition(int first, int second){
+         position[0] = first;
+         position[1] = second;
+    }
     public boolean ifAlive(){return true;}
     public int[] convertor(String position){
         int[] arr = new int[2];
