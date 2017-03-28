@@ -13,9 +13,13 @@ VERSION or DATE: March 28,2017
 HOW TO START THIS PROJECT:
 Sample:
 bogon:/ dusongbo$ cd Users
+
 bogon:Users dusongbo$ cd dusongbo
+
 bogon:~ dusongbo$ cd ChessGame
+
 bogon:ChessGame dusongbo$ javac /Users/dusongbo/ChessGame/Bishop.java /Users/dusongbo/ChessGame/Board.java /Users/dusongbo/ChessGame/Game.java /Users/dusongbo/ChessGame/King.java /Users/dusongbo/ChessGame/Knight.java /Users/dusongbo/ChessGame/Main.java /Users/dusongbo/ChessGame/Pawns.java /Users/dusongbo/ChessGame/PieceGroup.java /Users/dusongbo/ChessGame/Pieces.java /Users/dusongbo/ChessGame/Player.java /Users/dusongbo/ChessGame/Queen.java /Users/dusongbo/ChessGame/Rook.java 
+
 bogon:ChessGame dusongbo$ java Main
 
 Format:   'GOTO A2,A3' or 'QUIT' only!
