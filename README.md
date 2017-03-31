@@ -28,7 +28,7 @@ Format:   'GOTO A2,A3' or 'QUIT' only!
 
 [BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	
 
-[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
+[     ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
 
 [   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
 
