@@ -1,7 +1,7 @@
 public class Board
 {
-    private PieceGroup white;
-    private PieceGroup black;
+    private static PieceGroup white;
+    private static PieceGroup black;
     private final int length = 8; 
     private static Pieces[][] board=new Pieces[8][8];
     Board(){
@@ -11,14 +11,20 @@ public class Board
     public static Pieces[][] getBoard(){
         return board;
     }
-    private boolean check(String command){
+    public static PieceGroup getGroup(String color){
+        if(color.equals("black"))
+        return black;
+        else
+        return white;
+    }
+    private boolean check(String command)throws InvalidMoveException{
         boolean check = false;
         if(command.length()==10){
             int first = command.charAt(5);
-            int second = Integer.valueOf(command.substring(6,7));
+            int second = command.charAt(6)-48;
             int third = command.charAt(8);
-            int forth = Integer.valueOf(command.substring(9,10));        
-            if(command.substring(0,4).equalsIgnoreCase("GOTO")){
+            int forth = command.charAt(9)-48;        
+            if(command.substring(0,5).equalsIgnoreCase("GOTO ")){
                 if(((first>=65&&first<=72)||(first>=97&&first<=104))&&
                 ((third>=65&&third<=72)||(third>=97&&third<=104))&&
                 (second<=8)&&
@@ -26,6 +32,12 @@ public class Board
                     check = true;
                 }
             }
+        }
+        else if(command.equalsIgnoreCase("queen")||command.equalsIgnoreCase("knight")||command.equalsIgnoreCase("rook")||command.equalsIgnoreCase("bishop")){
+            check = true;
+        }
+        if(check == false){
+            throw new InvalidMoveException(command);
         }
         return check;
     }
@@ -38,8 +50,12 @@ public class Board
             }           
         }
         else{
-            if(check(command)){
-                white.run(command);
+            try{
+                if(check(command)){
+                    white.run(command);
+                }
+            }catch(InvalidMoveException e){
+                System.out.println("Sorry " + command + " is not a valid movement");
             }
         }
     }

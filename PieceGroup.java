@@ -19,6 +19,9 @@ public class PieceGroup
     protected Pawns pawns8 = new Pawns();
     private int count ;
     private static String turn;
+    private int lastCount = 1;
+    private int coordinationForOnce[] =new int[2];
+    private boolean checkTenLengthCommandValidable = true;
     PieceGroup(String input){
         if(input.equals ("white")){
             knight1.setProperty("B1","WKT",knight1,"white");
@@ -59,59 +62,378 @@ public class PieceGroup
         count=1;
         turn = "white";
     }
-    public static String getTurn(){
-        return turn;
+    public static String getTurn(){return turn;}
+    private Pieces getKing(){
+        if(turn == "white"){return Board.getGroup("black").king;}
+        else{return Board.getGroup("white").king;}
     }
-    public void run(String command){
-        String[] arr=disposeString(command);
-        int[] coordination1=rook1.convertor(arr[0]);
-        int[] coordination2=rook1.convertor(arr[1]);//coordination
-        String colorRequirement="";
-        String antiColorRequirement="";
-        if(count%2==0){
-          colorRequirement="black";  
-          antiColorRequirement = "white";
-        }
-        else{
-          colorRequirement="white";
-          antiColorRequirement = "black";
-        }
-        if(Board.getBoard()[coordination2[0]][coordination2[1]]==null&&
-           Board.getBoard()[coordination1[0]][coordination1[1]]!=null&&
-           Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
-           if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)){
-               Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
-               Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
-               Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
-               Board.getBoard()[coordination1[0]][coordination1[1]]=null;
-               count++;
-           }
-        }
-        else if((Board.getBoard()[coordination2[0]][coordination2[1]]!=null)&&
-            Board.getBoard()[coordination2[0]][coordination2[1]].color.equals(antiColorRequirement)&&
-            Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
-            if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)){
-                Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
-                Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
-                Board.getBoard()[coordination2[0]][coordination2[1]]=null;
-                Board.getBoard()[coordination2[0]][coordination2[1]]=null;
-                Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
-                Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+    private Pieces getKing2(){
+        if(turn == "white"){return Board.getGroup("white").king;}
+        else{return Board.getGroup("black").king;}
+    }
+    public void run(String command) throws InvalidMoveException{
+        if(command.length()==10&&checkTenLengthCommandValidable){
+            String[] arr=disposeString(command);
+            int[] coordination1=rook1.convertor(arr[0]);
+            int[] coordination2=rook1.convertor(arr[1]);//coordination
+            String colorRequirement="";
+            String antiColorRequirement="";
+            if(count%2==0){
+                colorRequirement="black";  
+                antiColorRequirement = "white";
+            }
+            else{
+                colorRequirement="white";
+                antiColorRequirement = "black";
+            }           
+            if(Board.getBoard()[coordination2[0]][coordination2[1]]==null&&
+                Board.getBoard()[coordination1[0]][coordination1[1]]!=null&&
+                Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
+                if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)
+                &&isCheck(getKing2())==false){
+                    Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
+                    Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
+                    Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
+                    Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+                    count++;
+                }
+                else if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)&&isCheck(getKing2())==true){
+                    Pieces lastMovingPiece = Board.getBoard()[coordination1[0]][coordination1[1]];
+                    Board.getBoard()[coordination2[0]][coordination2[1]]=lastMovingPiece;
+                    lastMovingPiece.position[0]=coordination2[0];
+                    lastMovingPiece.position[1]=coordination2[1];
+                    Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+                    if(isCheck(getKing2())==true){
+                        Board.getBoard()[coordination2[0]][coordination2[1]]=null;
+                        Board.getBoard()[coordination1[0]][coordination1[1]]=lastMovingPiece;
+                        lastMovingPiece.position[0]=coordination1[0];
+                        lastMovingPiece.position[1]=coordination1[1];
+                    }
+                    else{
+                        count++;
+                    }
+                }
+            }
+            else if((Board.getBoard()[coordination2[0]][coordination2[1]]!=null)&&
+                Board.getBoard()[coordination2[0]][coordination2[1]].color.equals(antiColorRequirement)&&
+                Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
+                if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)
+                &&isCheck(getKing2())==false){
+                    Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
+                    Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
+                    Board.getBoard()[coordination2[0]][coordination2[1]]=null;
+                    Board.getBoard()[coordination2[0]][coordination2[1]]=null;
+                    Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
+                    Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+                    count++;
+                }
+                else if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)&&isCheck(getKing2())==true){
+                    Pieces lastMovingPiece = Board.getBoard()[coordination1[0]][coordination1[1]];
+                    Pieces eatenPiece = Board.getBoard()[coordination2[0]][coordination2[1]];
+                    Board.getBoard()[coordination2[0]][coordination2[1]]=lastMovingPiece;
+                    lastMovingPiece.position[0]=coordination2[0];
+                    lastMovingPiece.position[1]=coordination2[1];
+                    Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+                    if(isCheck(getKing2())==true){
+                        Board.getBoard()[coordination2[0]][coordination2[1]]=eatenPiece;
+                        Board.getBoard()[coordination1[0]][coordination1[1]]=lastMovingPiece;
+                        lastMovingPiece.position[0]=coordination1[0];
+                        lastMovingPiece.position[1]=coordination1[1];
+                    }
+                    else{
+                        count++;
+                    }
+                }
+            }
+            if(isCheck(getKing())){
+                System.out.println(getKing().color+" king is checked");
+            }
+            else if(isCheck(getKing2())){
+                System.out.println(getKing2().color+" king is checked");
+            }
+            if(Board.getBoard()[coordination2[0]][coordination2[1]]!=null){
+                if(Board.getBoard()[coordination2[0]][coordination2[1]].name.substring(1).equals("PN")&&(coordination2[0]==7||coordination2[0]==0)){
+                    count--;
+                    lastCount--;
+                    coordinationForOnce[0]=coordination2[0];
+                    coordinationForOnce[1]=coordination2[1];
+                    checkTenLengthCommandValidable = false;
+                    System.out.println("Please enter the name of the piece that you want the pawn to change to E.g queen");
+                }
+            }
+        }    
+        else if(command.length()!=10&&checkTenLengthCommandValidable!=true){
+            try{
+                Pieces newPiece = getNewPiece(command);
+                newPiece.setPosition(coordinationForOnce[0],coordinationForOnce[1]);
+                Board.getBoard()[coordinationForOnce[0]][coordinationForOnce[1]] = newPiece;
+                coordinationForOnce = new int[2];
                 count++;
+                checkTenLengthCommandValidable = true;
+            }
+            catch(WrongNameException e){
+                System.out.println("Sorry " + command + " is not a correct name");
             }
         }
-        if(count%2==0){
-          turn="black";  
-        }
+        if(count == lastCount){throw new InvalidMoveException(command);}
         else{
-          turn="white";
+            lastCount++;
+            addStayTurn();
+        }
+        if(count%2==0){turn="black";  }
+        else{turn="white";}
+    }
+    private boolean isCheck(Pieces king){//return true if is checked by the enemy
+        boolean forReturn = false;
+        boolean right = checkRight(king);
+        boolean left = checkLeft(king);
+        boolean up = checkUp(king);
+        boolean down = checkDown(king);
+        boolean upRight = checkUpRight(king);
+        boolean upLeft = checkUpLeft(king);
+        boolean downRight = checkDownRight(king);
+        boolean downLeft = checkDownLeft(king);
+        boolean knightCheck = checkKnight(king);
+        if(right||left||up||down||upRight||upLeft||downRight||downLeft||knightCheck){forReturn = true;}
+        return forReturn;
+    }
+    private boolean checkRight(Pieces king){//return true if is checked from right
+        int startPoint = king.position[1]+1;
+        for(int i =startPoint;i<8;i++){
+            if(Board.getBoard()[king.position[0]][i]!=null){
+                if(Board.getBoard()[king.position[0]][i].color.equals(king.color)){return false;}
+                else{
+                    if(Board.getBoard()[king.position[0]][i].name.substring(1).equals("QN")||
+                    Board.getBoard()[king.position[0]][i].name.substring(1).equals("RK")){return true;}   
+                }
+            }
+        }
+        return false;
+    }
+    private boolean checkLeft(Pieces king){//return true if is checked from left
+        int startPoint = king.position[1]-1;
+        for(int i =startPoint;i>=0;i--){
+            if(Board.getBoard()[king.position[0]][i]!=null){
+                if(Board.getBoard()[king.position[0]][i].color.equals(king.color)){return false;}
+                else{
+                    if(Board.getBoard()[king.position[0]][i].name.substring(1).equals("QN")||
+                    Board.getBoard()[king.position[0]][i].name.substring(1).equals("RK")){return true;
+                    }   
+                }      
+            }
+        }
+        return false;
+    }
+    private boolean checkUp(Pieces king){//return true if is checked from up
+        int startPoint = king.position[0]-1;
+        for(int i =startPoint;i>=0;i--){
+            if(Board.getBoard()[i][king.position[1]]!=null){
+                if(Board.getBoard()[i][king.position[1]].color.equals(king.color)){
+                    return false;
+                }
+                else{
+                    if(Board.getBoard()[i][king.position[1]].name.substring(1).equals("QN")||
+                    Board.getBoard()[i][king.position[1]].name.substring(1).equals("RK")){return true;}   
+                }
+            }
+        }
+        return false;
+    }
+    private boolean checkDown(Pieces king){//return true if is checked from down
+        int startPoint = king.position[0]+1;
+        for(int i =startPoint;i<8;i++){
+            if(Board.getBoard()[i][king.position[1]]!=null){
+                if(Board.getBoard()[i][king.position[1]].color.equals(king.color)){return false;}
+                else{
+                    if(Board.getBoard()[i][king.position[1]].name.substring(1).equals("QN")||
+                    Board.getBoard()[i][king.position[1]].name.substring(1).equals("RK")){return true;}      
+                }
+            }
+        }
+        return false;
+    }
+    private boolean checkUpRight(Pieces king){//return true if is checked from up right
+        int verticalPosition = king.position[0]-1;
+        int horizontalPosition = king.position[1]+1;
+        int numCount = 0;
+        for(;horizontalPosition<8&&verticalPosition>=0;horizontalPosition++){
+            if(Board.getBoard()[verticalPosition][horizontalPosition]!=null){
+                if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("PN")&&
+                !Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)&&
+                numCount==0){return true;}
+                if(Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)){return false;}
+                else{
+                    if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
+                    Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                } 
+            }
+            numCount++;
+            verticalPosition--;
+        }
+        return false;
+    }
+    private boolean checkDownRight(Pieces king){//return true if is checked from down right
+        int verticalPosition = king.position[0]+1;
+        int horizontalPosition = king.position[1]+1;
+        int numCount = 0;
+        for(;horizontalPosition<8&&verticalPosition<8;horizontalPosition++){
+            if(Board.getBoard()[verticalPosition][horizontalPosition]!=null){
+                if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("PN")&&
+                !Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)&&
+                numCount==0){return true;}
+                if(Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)){return false;}
+                else{
+                    if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
+                    Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                } 
+            }
+            numCount++;
+            verticalPosition++;
+        }
+        return false;
+    }
+    private boolean checkUpLeft(Pieces king){//return true if is checked from up left
+        int verticalPosition = king.position[0]-1;
+        int horizontalPosition = king.position[1]-1;
+        int numCount = 0;
+        for(;horizontalPosition>=0&&verticalPosition>=0;horizontalPosition--){
+            if(Board.getBoard()[verticalPosition][horizontalPosition]!=null){
+                if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("PN")&&
+                !Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)&&
+                numCount==0){return true;}
+                if(Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)){return false;}
+                else{
+                    if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
+                    Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                } 
+            }
+            numCount++;
+            verticalPosition--;
+        }
+        return false;
+    }
+    private boolean checkDownLeft(Pieces king){//return true if is checked from down left
+        int verticalPosition = king.position[0]+1;
+        int horizontalPosition = king.position[1]-1;
+        int numCount = 0;
+        for(;horizontalPosition>=0&&verticalPosition<8;horizontalPosition--){
+            if(Board.getBoard()[verticalPosition][horizontalPosition]!=null){
+                if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("PN")&&
+                !Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)&&
+                numCount==0){return true;}
+                if(Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)){return false;}
+                else{
+                    if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
+                    Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                } 
+            }
+            numCount++;
+            verticalPosition++;
+        }
+        return false;
+    }
+    private boolean checkKnight(Pieces king){//return true if is checked by knight
+        int horizontalPosition = king.position[1];
+        int verticalPosition = king.position[0];
+        int position1[] = {verticalPosition-1,horizontalPosition+2};
+        int position2[] = {verticalPosition-2,horizontalPosition+1};
+        int position3[] = {verticalPosition-2,horizontalPosition-1};
+        int position4[] = {verticalPosition-1,horizontalPosition-2};
+        int position5[] = {verticalPosition+1,horizontalPosition-2};
+        int position6[] = {verticalPosition+2,horizontalPosition-1};
+        int position7[] = {verticalPosition+2,horizontalPosition+1};
+        int position8[] = {verticalPosition+1,horizontalPosition+2};
+        ArrayList<int[]> potentialPosition = new ArrayList<int[]>(8);
+        potentialPosition.add(position1);
+        potentialPosition.add(position2);
+        potentialPosition.add(position3);
+        potentialPosition.add(position4);
+        potentialPosition.add(position5);
+        potentialPosition.add(position6);
+        potentialPosition.add(position7);
+        potentialPosition.add(position8);
+        int length = 8;
+        for(int i = 0;i<length;i++){
+            int position[] = potentialPosition.get(i);
+            if(!((position[0]>=0&&position[0]<=7)&&(position[1]>=0&&position[1]<=7))){
+                potentialPosition.remove(i);
+                i--;
+                length--;
+            }
+        }
+        length = potentialPosition.size();
+        for(int i =0;i<length;i++){
+            int position[] = potentialPosition.get(i);
+            if(Board.getBoard()[position[0]][position[1]]!=null){
+                if(Board.getBoard()[position[0]][position[1]].name.substring(1).equals("KT")&&
+                !(Board.getBoard()[position[0]][position[1]].color.equals(king.color))){return true;}
+            }
+        }
+        return false;
+    }
+    private Pieces getNewPiece(String command)throws WrongNameException{
+        boolean check = true;
+        Pieces piece = null;
+        if(command.equalsIgnoreCase("queen")){
+            piece = new Queen();
+            if(turn == "black"){piece.name = "BQN";}
+            else{piece.name = "WQN";}
+        }
+        else if(command.equalsIgnoreCase("knight")){
+            piece = new Knight();
+            if(turn == "black"){piece.name = "BKT";}
+            else{piece.name = "WKT";}
+        }
+        else if(command.equalsIgnoreCase("rook")){
+            piece = new Rook();
+            if(turn == "black"){piece.name = "BRK";}
+            else{piece.name = "WRK";}
+        }
+        else if(command.equalsIgnoreCase("bishop")){
+            piece = new Bishop();
+            if(turn == "black"){piece.name = "BBP";}
+            else{piece.name = "WBP";}
+        }
+        else{check = false;}
+        if(check = false){throw new WrongNameException(command);}
+        else{piece.color = turn;}
+        return piece;
+    }
+    private void addStayTurn(){
+        for(int i =0;i<8;i++){
+            for(int k = 0;k<8;k++){
+                if(Board.getBoard()[i][k]!=null){Board.getBoard()[i][k].setStayTurn();}
+            }
         }
     }
-    public String[] disposeString(String command)
-    {
+    public String[] disposeString(String command){
         String cut[]=new String[2];
         cut[0]=command.substring(5,7);   
         cut[1]=command.substring(8,10);
         return cut;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

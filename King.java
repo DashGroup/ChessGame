@@ -18,7 +18,8 @@ public class King extends Pieces
     public boolean followsExceptionalRules(int[] command){
         boolean check = false;
         //if(followsBasicRules(command) == true) {movementNumCount++;}
-        if(movementNumCount == 0 &&  (command[0]-position[0]) == 0 && Math.abs(command[1]-position[1]) == 2){
+        if(movementNumCount == 0 &&  (command[0]-position[0]) == 0 && Math.abs(command[1]-position[1]) == 2&&
+        getRook(command[1]).name.substring(1).equals("RK")&&getRook(command[1]).movementNumCount==0){
             check = isBlockOfKing(command);
             if(check){
                 Pieces rookN = getRook(command[1]);
@@ -90,5 +91,6 @@ public class King extends Pieces
         this.name=name;
         Board.getBoard()[position[0]][position[1]]=piece;
         this.color=color;
+        this.stayTurn=1;
     }
 }

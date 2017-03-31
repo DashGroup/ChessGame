@@ -6,9 +6,13 @@ public abstract class Pieces
     protected boolean alive;
     protected boolean ifMove;
     protected int movementNumCount;
+    protected int stayTurn;
     public abstract boolean followsBasicRules(int[] command);
     public abstract boolean followsExceptionalRules(int[] command);
-    public  boolean isAllowedToMove(int[] command){
+    public void setStayTurn(){
+        stayTurn++;
+    }
+    public boolean isAllowedToMove(int[] command){
         boolean check=false;
         if(followsBasicRules(command)){
             check=true;
@@ -18,6 +22,7 @@ public abstract class Pieces
         }
         if(check==true){
             movementNumCount++;
+            stayTurn=1;
         }
         return check;
     }

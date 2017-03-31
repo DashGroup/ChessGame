@@ -4,7 +4,7 @@ public class Main
     public static void run(){
         Game game = new Game();
         Scanner in = new Scanner(System.in);
-        System.out.println("Format:   'GOTO A2,A3' or 'QUIT' only!");
+        System.out.println("Format:   'GOTO A2,A3' or 'QUIT' or the name of the pawn "+"\n"+ "you want to change only!");
         System.out.println();
         boolean check = true;
         while(check){

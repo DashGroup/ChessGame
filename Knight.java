@@ -19,5 +19,6 @@ public class Knight extends Pieces
         this.name=name;
         Board.getBoard()[position[0]][position[1]]=piece;
         this.color=color;
+        this.stayTurn=1;
     }
 }
