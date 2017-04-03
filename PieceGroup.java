@@ -349,31 +349,15 @@ public class PieceGroup
         int position6[] = {verticalPosition+2,horizontalPosition-1};
         int position7[] = {verticalPosition+2,horizontalPosition+1};
         int position8[] = {verticalPosition+1,horizontalPosition+2};
-        ArrayList<int[]> potentialPosition = new ArrayList<int[]>(8);
-        potentialPosition.add(position1);
-        potentialPosition.add(position2);
-        potentialPosition.add(position3);
-        potentialPosition.add(position4);
-        potentialPosition.add(position5);
-        potentialPosition.add(position6);
-        potentialPosition.add(position7);
-        potentialPosition.add(position8);
-        int length = 8;
-        for(int i = 0;i<length;i++){
-            int position[] = potentialPosition.get(i);
-            if(!((position[0]>=0&&position[0]<=7)&&(position[1]>=0&&position[1]<=7))){
-                potentialPosition.remove(i);
-                i--;
-                length--;
-            }
-        }
-        length = potentialPosition.size();
-        for(int i =0;i<length;i++){
-            int position[] = potentialPosition.get(i);
-            if(Board.getBoard()[position[0]][position[1]]!=null){
-                if(Board.getBoard()[position[0]][position[1]].name.substring(1).equals("KT")&&
-                !(Board.getBoard()[position[0]][position[1]].color.equals(king.color))){return true;}
-            }
+        int[] potentialPosition[]={position1,position2,position3,position4,position5,position6,position7,position8};
+         for(int i=0;i<8;i++){
+         try{
+            if(Board.getBoard()[potentialPosition[i][0]][potentialPosition[i][1]].name.substring(1).equals("KT")&&
+                !(Board.getBoard()[potentialPosition[i][0]][potentialPosition[i][1]].color.equals(king.color)))
+                return true;
+         }
+         catch(NullPointerException e ){}
+         catch(ArrayIndexOutOfBoundsException e){}
         }
         return false;
     }
