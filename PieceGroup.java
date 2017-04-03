@@ -122,7 +122,6 @@ public class PieceGroup
                     Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
                     Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
                     Board.getBoard()[coordination2[0]][coordination2[1]]=null;
-                    Board.getBoard()[coordination2[0]][coordination2[1]]=null;
                     Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
                     Board.getBoard()[coordination1[0]][coordination1[1]]=null;
                     count++;
@@ -205,6 +204,7 @@ public class PieceGroup
                 else{
                     if(Board.getBoard()[king.position[0]][i].name.substring(1).equals("QN")||
                     Board.getBoard()[king.position[0]][i].name.substring(1).equals("RK")){return true;}   
+                    else{return false;}
                 }
             }
         }
@@ -217,8 +217,8 @@ public class PieceGroup
                 if(Board.getBoard()[king.position[0]][i].color.equals(king.color)){return false;}
                 else{
                     if(Board.getBoard()[king.position[0]][i].name.substring(1).equals("QN")||
-                    Board.getBoard()[king.position[0]][i].name.substring(1).equals("RK")){return true;
-                    }   
+                    Board.getBoard()[king.position[0]][i].name.substring(1).equals("RK")){return true;}
+                    else{return false;}
                 }      
             }
         }
@@ -234,6 +234,7 @@ public class PieceGroup
                 else{
                     if(Board.getBoard()[i][king.position[1]].name.substring(1).equals("QN")||
                     Board.getBoard()[i][king.position[1]].name.substring(1).equals("RK")){return true;}   
+                    else{return false;}
                 }
             }
         }
@@ -247,6 +248,7 @@ public class PieceGroup
                 else{
                     if(Board.getBoard()[i][king.position[1]].name.substring(1).equals("QN")||
                     Board.getBoard()[i][king.position[1]].name.substring(1).equals("RK")){return true;}      
+                    else{return false;}
                 }
             }
         }
@@ -265,6 +267,7 @@ public class PieceGroup
                 else{
                     if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
                     Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                    else{return false;}
                 } 
             }
             numCount++;
@@ -285,6 +288,7 @@ public class PieceGroup
                 else{
                     if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
                     Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                    else{return false;}
                 } 
             }
             numCount++;
@@ -305,6 +309,7 @@ public class PieceGroup
                 else{
                     if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
                     Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                    else{return false;}
                 } 
             }
             numCount++;
@@ -324,7 +329,8 @@ public class PieceGroup
                 if(Board.getBoard()[verticalPosition][horizontalPosition].color.equals(king.color)){return false;}
                 else{
                     if(Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("QN")||
-                    Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}   
+                    Board.getBoard()[verticalPosition][horizontalPosition].name.substring(1).equals("BP")){return true;}  
+                    else{return false;}
                 } 
             }
             numCount++;
