@@ -41,7 +41,7 @@ public class Board
         }
         return check;
     }
-    public void run(String command){
+    public void run(String command)throws CheckmateException{
         if(command.equalsIgnoreCase("quit")){
             for(int i = 0;i<length;i++){
                 for(int k =0;k<length;k++){
@@ -56,6 +56,11 @@ public class Board
                 }
             }catch(InvalidMoveException e){
                 System.out.println("Sorry " + command + " is not a valid movement");
+            }
+            catch(CheckmateException e){
+                System.out.println(toString());
+                this.run("quit");
+                throw e;
             }
         }
     }

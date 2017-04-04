@@ -22,6 +22,7 @@ public class PieceGroup
     private int lastCount = 1;
     private int coordinationForOnce[] =new int[2];
     private boolean checkTenLengthCommandValidable = true;
+    ArrayList<Pieces> piecesToBeCheck = new ArrayList<Pieces>(16);
     PieceGroup(String input){
         if(input.equals ("white")){
             knight1.setProperty("B1","WKT",knight1,"white");
@@ -71,7 +72,7 @@ public class PieceGroup
         if(turn == "white"){return Board.getGroup("white").king;}
         else{return Board.getGroup("black").king;}
     }
-    public void run(String command) throws InvalidMoveException{
+    public void run(String command) throws InvalidMoveException,CheckmateException{
         if(command.length()==10&&checkTenLengthCommandValidable){
             String[] arr=disposeString(command);
             int[] coordination1=rook1.convertor(arr[0]);
@@ -95,7 +96,14 @@ public class PieceGroup
                     Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
                     Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
                     Board.getBoard()[coordination1[0]][coordination1[1]]=null;
-                    count++;
+                    if(isCheck(getKing2())==false){
+                        count++;
+                    }
+                    else{
+                        Board.getBoard()[coordination1[0]][coordination1[1]]=Board.getBoard()[coordination2[0]][coordination2[1]];
+                        Board.getBoard()[coordination2[0]][coordination2[1]]=null;
+                        Board.getBoard()[coordination1[0]][coordination1[1]].setPosition(coordination1[0],coordination1[1]);
+                    }
                 }
                 else if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)&&isCheck(getKing2())==true){
                     Pieces lastMovingPiece = Board.getBoard()[coordination1[0]][coordination1[1]];
@@ -114,44 +122,57 @@ public class PieceGroup
                     }
                 }
             }
-            else if((Board.getBoard()[coordination2[0]][coordination2[1]]!=null)&&
-                Board.getBoard()[coordination2[0]][coordination2[1]].color.equals(antiColorRequirement)&&
-                Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
-                if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)
-                &&isCheck(getKing2())==false){
-                    Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
-                    Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
-                    Board.getBoard()[coordination2[0]][coordination2[1]]=null;
-                    Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
-                    Board.getBoard()[coordination1[0]][coordination1[1]]=null;
-                    count++;
-                }
-                else if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)&&isCheck(getKing2())==true){
-                    Pieces lastMovingPiece = Board.getBoard()[coordination1[0]][coordination1[1]];
-                    Pieces eatenPiece = Board.getBoard()[coordination2[0]][coordination2[1]];
-                    Board.getBoard()[coordination2[0]][coordination2[1]]=lastMovingPiece;
-                    lastMovingPiece.position[0]=coordination2[0];
-                    lastMovingPiece.position[1]=coordination2[1];
-                    Board.getBoard()[coordination1[0]][coordination1[1]]=null;
-                    if(isCheck(getKing2())==true){
-                        Board.getBoard()[coordination2[0]][coordination2[1]]=eatenPiece;
-                        Board.getBoard()[coordination1[0]][coordination1[1]]=lastMovingPiece;
-                        lastMovingPiece.position[0]=coordination1[0];
-                        lastMovingPiece.position[1]=coordination1[1];
+            else if((Board.getBoard()[coordination2[0]][coordination2[1]]!=null)&&Board.getBoard()[coordination1[0]][coordination1[1]]!=null){
+                if(Board.getBoard()[coordination2[0]][coordination2[1]].color.equals(antiColorRequirement)&&
+                    Board.getBoard()[coordination1[0]][coordination1[1]].color.equals(colorRequirement)){
+                    if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)
+                    &&isCheck(getKing2())==false){
+                        Board.getBoard()[coordination1[0]][coordination1[1]].position[0]=coordination2[0];
+                        Board.getBoard()[coordination1[0]][coordination1[1]].position[1]=coordination2[1];
+                        Pieces eatenOne = Board.getBoard()[coordination2[0]][coordination2[1]];
+                        Board.getBoard()[coordination2[0]][coordination2[1]]=null;
+                        Board.getBoard()[coordination2[0]][coordination2[1]]=Board.getBoard()[coordination1[0]][coordination1[1]];
+                        Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+                        if(isCheck(getKing2())==false){
+                            count++;
+                        }
+                        else{
+                            Board.getBoard()[coordination1[0]][coordination1[1]]=Board.getBoard()[coordination2[0]][coordination2[1]];
+                            Board.getBoard()[coordination2[0]][coordination2[1]]=eatenOne;
+                            Board.getBoard()[coordination1[0]][coordination1[1]].setPosition(coordination1[0],coordination1[1]);
+                        }
                     }
-                    else{
-                        count++;
+                    else if(Board.getBoard()[coordination1[0]][coordination1[1]].isAllowedToMove(coordination2)&&isCheck(getKing2())==true){
+                        Pieces lastMovingPiece = Board.getBoard()[coordination1[0]][coordination1[1]];
+                        Pieces eatenPiece = Board.getBoard()[coordination2[0]][coordination2[1]];
+                        Board.getBoard()[coordination2[0]][coordination2[1]]=lastMovingPiece;
+                        lastMovingPiece.position[0]=coordination2[0];
+                        lastMovingPiece.position[1]=coordination2[1];
+                        Board.getBoard()[coordination1[0]][coordination1[1]]=null;
+                        if(isCheck(getKing2())==true){
+                            Board.getBoard()[coordination2[0]][coordination2[1]]=eatenPiece;
+                            Board.getBoard()[coordination1[0]][coordination1[1]]=lastMovingPiece;
+                            lastMovingPiece.position[0]=coordination1[0];
+                            lastMovingPiece.position[1]=coordination1[1];
+                        }
+                        else{count++;}
                     }
-                }
+                }   
             }
             if(isCheck(getKing())){
-                System.out.println(getKing().color+" king is checked");
+                if(isCheckMate(getKing())){
+                    System.out.println("End of the Game! "+getKing().color+" has been checkmated by "+getKing2().color);
+                    throw new CheckmateException(getKing().color);
+                }
+                else
+                    System.out.println(getKing().color+" king is checked");
             }
             else if(isCheck(getKing2())){
                 System.out.println(getKing2().color+" king is checked");
             }
             if(Board.getBoard()[coordination2[0]][coordination2[1]]!=null){
-                if(Board.getBoard()[coordination2[0]][coordination2[1]].name.substring(1).equals("PN")&&(coordination2[0]==7||coordination2[0]==0)){
+                if(Board.getBoard()[coordination2[0]][coordination2[1]].name.substring(1).equals("PN")&&(coordination2[0]==7||coordination2[0]==0)&&
+                Board.getBoard()[coordination2[0]][coordination2[1]].color.equals(colorRequirement)){
                     count--;
                     lastCount--;
                     coordinationForOnce[0]=coordination2[0];
@@ -181,6 +202,314 @@ public class PieceGroup
         }
         if(count%2==0){turn="black";  }
         else{turn="white";}
+    }
+    private boolean isCheckMate(Pieces king){//return true if is checkmate
+        boolean forReturn = false;
+        if(checkAroundKing(king)&&checkOtherPieces(king)){forReturn = true;}
+        return forReturn;
+    }
+    private boolean checkAroundKing(Pieces king){//return true if no where can move for the king
+        boolean forReturn = false;
+        int checkCount=0;
+        int horizontalPosition = king.position[1];
+        int verticalPosition = king.position[0];
+        Pieces potentialEatenOne = null;
+        int position1[] = {verticalPosition-1,horizontalPosition};
+        int position2[] = {verticalPosition+1,horizontalPosition};
+        int position3[] = {verticalPosition,horizontalPosition-1};
+        int position4[] = {verticalPosition,horizontalPosition+1};
+        int position5[] = {verticalPosition-1,horizontalPosition+1};
+        int position6[] = {verticalPosition-1,horizontalPosition-1};
+        int position7[] = {verticalPosition+1,horizontalPosition+1};
+        int position8[] = {verticalPosition+1,horizontalPosition-1};
+        int[] potentialPosition[]={position1,position2,position3,position4,position5,position6,position7,position8};
+        for(int i = 0;i<8;i++){
+            int position[] = potentialPosition[i];
+            if((position[0]>=0&&position[0]<8)&&(position[1]>=0&&position[1]<8)){
+                if(Board.getBoard()[position[0]][position[1]]==null||(!Board.getBoard()[position[0]][position[1]].color.equals(king.color))){
+                    if(Board.getBoard()[position[0]][position[1]]!=null){
+                        if(!Board.getBoard()[position[0]][position[1]].color.equals(king.color)){
+                            potentialEatenOne = Board.getBoard()[position[0]][position[1]];
+                            Board.getBoard()[position[0]][position[1]]=king;
+                            Board.getBoard()[position[0]][position[1]]=null;
+                            king.setPosition(position[0],position[1]);
+                            if(isCheck(king)){checkCount++;}
+                            Board.getBoard()[verticalPosition][horizontalPosition]=king;
+                            king.setPosition(verticalPosition,horizontalPosition);
+                            Board.getBoard()[position[0]][position[1]]=potentialEatenOne;
+                        }
+                        else{checkCount++;}
+                    }
+                    else{
+                        Board.getBoard()[position[0]][position[1]]=king;
+                        Board.getBoard()[verticalPosition][horizontalPosition]=null;
+                        king.setPosition(position[0],position[1]);
+                        if(isCheck(king)){checkCount++;}
+                        Board.getBoard()[verticalPosition][horizontalPosition]=king;
+                        king.setPosition(verticalPosition,horizontalPosition);
+                        Board.getBoard()[position[0]][position[1]]=null;
+                    }
+                }
+                else{checkCount++;}
+            }   
+            else{checkCount++;}
+        }
+        if(checkCount==8){forReturn = true;}
+        return forReturn;
+    }
+    private boolean checkOtherPieces(Pieces king){//return true if no pieces can save the king
+        boolean forReturn = true;
+        for(int i =0;i<8;i++){
+            for(int k = 0;k<8;k++){
+                if(Board.getBoard()[i][k]!=null){
+                    if(Board.getBoard()[i][k].color.equals(king.color)&&(!Board.getBoard()[i][k].name.substring(1).equals("KG"))){
+                        piecesToBeCheck.add(Board.getBoard()[i][k]);
+                    }
+                }
+            }
+        }
+        ArrayList fiveKindsPiecesCheck = new ArrayList(piecesToBeCheck.size());
+        for(int i = 0;i<piecesToBeCheck.size();i++){
+            Pieces toBeCheck = piecesToBeCheck.get(i);
+            if(toBeCheck.name.substring(1).equals("PN")){
+                fiveKindsPiecesCheck.add(checkPawns(toBeCheck));
+            }
+            else if(toBeCheck.name.substring(1).equals("QN")){
+                fiveKindsPiecesCheck.add(checkQueens(toBeCheck));
+            }
+            else if(toBeCheck.name.substring(1).equals("KT")){
+                fiveKindsPiecesCheck.add(checkKnights(toBeCheck));
+            }
+            else if(toBeCheck.name.substring(1).equals("RK")){
+                fiveKindsPiecesCheck.add(checkRooks(toBeCheck));
+            }
+            else if(toBeCheck.name.substring(1).equals("BP")){
+                fiveKindsPiecesCheck.add(checkBishops(toBeCheck));
+            }
+        }
+        if((fiveKindsPiecesCheck.contains(true))){
+            forReturn = false;
+        }
+        return forReturn;
+    }
+    private boolean checkPawns(Pieces toBeCheck){//return false if cannot protect the king
+        boolean forReturn = true;
+        int checkCount = 0;
+        int originalPosition[]={toBeCheck.position[0],toBeCheck.position[1]};
+        int unitUpDown1=0;
+        if(toBeCheck.color.equals("white")){unitUpDown1=-1;}
+        else{unitUpDown1 = 1;}
+        int[] position1 = {toBeCheck.position[0]+unitUpDown1,toBeCheck.position[1]};
+        int[] position2 = {toBeCheck.position[0]+(unitUpDown1*2),toBeCheck.position[1]};
+        int[] position3 = {toBeCheck.position[0]+unitUpDown1,toBeCheck.position[1]+1};
+        int[] position4 = {toBeCheck.position[0]+unitUpDown1,toBeCheck.position[1]-1};
+        int[] potentialPosition[]={position1,position2,position3,position4};
+        for(int i =0;i<2;i++){
+            int position[] = potentialPosition[i];
+            if((position[0]>=0&&position[0]<8)&&(position[1]>=0&&position[1]<8)){
+                if(Board.getBoard()[position[0]][position[1]]==null){checkCount = calculateCheckCount(toBeCheck,checkCount,position);}
+                else{checkCount++;}
+            }
+            else{checkCount++;}
+            if(toBeCheck.movementNumCount!=0){checkCount++;
+                    break;}
+        }
+        for(int i = 2;i<4;i++){
+            int position[] = potentialPosition[i];
+            if((position[0]>=0&&position[0]<8)&&(position[1]>=0&&position[1]<8)){
+                if(Board.getBoard()[position[0]][position[1]]!=null&&(!Board.getBoard()[position[0]][position[1]].color.equals(toBeCheck.color))){
+                    checkCount = calculateCheckCount2(toBeCheck,checkCount,position);
+                }
+                else{checkCount++;}
+            }
+            else{checkCount++;}
+        }
+        if(checkCount==4){forReturn = false;}
+        return forReturn;
+    }
+    private int calculateCheckCount(Pieces toBeCheck,int checkCount,int[] position){
+        Board.getBoard()[position[0]][position[1]]=toBeCheck;
+        int[] originalPosition = {toBeCheck.position[0],toBeCheck.position[1]};
+        toBeCheck.setPosition(position[0],position[1]);
+        Board.getBoard()[originalPosition[0]][originalPosition[1]]=null;
+        if(isCheck(getKing())){checkCount++;}
+        Board.getBoard()[originalPosition[0]][originalPosition[1]]=toBeCheck;
+        toBeCheck.setPosition(originalPosition[0],originalPosition[1]);
+        Board.getBoard()[position[0]][position[1]]=null;
+        return checkCount;
+    }
+    private int calculateCheckCount2(Pieces toBeCheck,int checkCount,int[] position){
+        int[] originalPosition = {toBeCheck.position[0],toBeCheck.position[1]};
+        Pieces toBeEaten = Board.getBoard()[position[0]][position[1]];
+        Board.getBoard()[position[0]][position[1]]=toBeCheck;
+        toBeCheck.setPosition(position[0],position[1]);
+        Board.getBoard()[originalPosition[0]][originalPosition[1]]=null;
+        if(isCheck(getKing())){checkCount++;}
+        Board.getBoard()[originalPosition[0]][originalPosition[1]]=toBeCheck;
+        toBeCheck.setPosition(originalPosition[0],originalPosition[1]);
+        Board.getBoard()[position[0]][position[1]]=toBeEaten;
+        return checkCount;
+    }
+    private boolean checkKnights(Pieces toBeCheck){//return false if cannot protect the king
+        boolean forReturn = true;
+        int checkCount=0;
+        int originalPosition[] = {toBeCheck.position[0],toBeCheck.position[1]};
+        int position1[] = {toBeCheck.position[0]-1,toBeCheck.position[1]+2};
+        int position2[] = {toBeCheck.position[0]-2,toBeCheck.position[1]+1};
+        int position3[] = {toBeCheck.position[0]-2,toBeCheck.position[1]-1};
+        int position4[] = {toBeCheck.position[0]-1,toBeCheck.position[1]-2};
+        int position5[] = {toBeCheck.position[0]+1,toBeCheck.position[1]-2};
+        int position6[] = {toBeCheck.position[0]+2,toBeCheck.position[1]-1};
+        int position7[] = {toBeCheck.position[0]+2,toBeCheck.position[1]+1};
+        int position8[] = {toBeCheck.position[0]+1,toBeCheck.position[1]+2};
+        int[] potentialPosition[]={position1,position2,position3,position4,position5,position6,position7,position8};
+        for(int i = 0;i<8;i++){
+            int[] position = potentialPosition[i];
+            if((position[0]>=0&&position[0]<8)&&(position[1]>=0&&position[1]<8)){
+                if(Board.getBoard()[position[0]][position[1]]==null){checkCount = calculateCheckCount(toBeCheck,checkCount,position);}
+                else if(Board.getBoard()[position[0]][position[1]]!=null&&(!Board.getBoard()[position[0]][position[1]].color.equals(toBeCheck.color))){
+                    checkCount = calculateCheckCount2(toBeCheck,checkCount,position);
+                }
+                else if(Board.getBoard()[position[0]][position[1]]!=null&&(Board.getBoard()[position[0]][position[1]].color.equals(toBeCheck.color))){
+                    checkCount++;
+                }
+            }
+            else{
+                checkCount++;
+            }
+        }
+        if(checkCount==8){
+            forReturn = false;
+        }
+        return forReturn;
+    }
+    private boolean checkQueens(Pieces toBeCheck){//return false if cannot protect the king
+        boolean forReturn = false;
+        boolean checkDiagnolly = checkBishops(toBeCheck);
+        boolean checkCrossing = checkRooks(toBeCheck);
+        if(checkDiagnolly==true||checkCrossing==true){
+            forReturn = true;
+        }
+        return forReturn;
+    }
+    private boolean determineBooleansForBishopsAndRooks(Pieces toBeCheck,int ver,int hor)throws BlockedException{
+        boolean forReturn = false;
+        int verticalPosition = toBeCheck.position[0];
+        int horizontalPosition=toBeCheck.position[1];
+        if(Board.getBoard()[ver][hor]!=null){
+            if(!Board.getBoard()[ver][hor].color.equals(toBeCheck.color)){
+                Pieces toBeEaten = Board.getBoard()[ver][hor];
+                Board.getBoard()[ver][hor] = toBeCheck;
+                toBeCheck.setPosition(ver,hor);
+                Board.getBoard()[verticalPosition][horizontalPosition]=null;
+                if(isCheck(getKing())){forReturn = false;}
+                else{forReturn = true;}
+                Board.getBoard()[ver][hor] = toBeEaten;
+                Board.getBoard()[verticalPosition][horizontalPosition] = toBeCheck;
+                toBeCheck.setPosition(verticalPosition,horizontalPosition);
+            }
+            else{forReturn = false;
+            throw new BlockedException();}
+        }
+        else{
+            Board.getBoard()[ver][hor] = toBeCheck;
+            toBeCheck.setPosition(ver,hor);
+            Board.getBoard()[verticalPosition][horizontalPosition]=null;
+            if(isCheck(getKing())){forReturn = false;}
+            else{forReturn = true;}
+            Board.getBoard()[ver][hor] = null;
+            Board.getBoard()[verticalPosition][horizontalPosition] = toBeCheck;
+            toBeCheck.setPosition(verticalPosition,horizontalPosition);
+        }
+        return forReturn;
+    }
+    private boolean checkBishops(Pieces toBeCheck){//return false if cannot protect the king
+        boolean forReturn = false;
+        boolean downRight = false;//true if can save the king
+        boolean downLeft = false;
+        boolean upRight = false;
+        boolean upLeft = false;
+        int verticalPosition = toBeCheck.position[0];
+        int horizontalPosition=toBeCheck.position[1];
+        int ver = verticalPosition+1;
+        int hor = horizontalPosition+1;
+        while(ver<8&&hor<8){//downright
+            try{downRight = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            ver++;
+            hor++;
+        }
+        ver = verticalPosition+1;
+        hor = horizontalPosition-1;
+        while(ver<8&&hor>=0){//downleft
+            try{downLeft = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            ver++;
+            hor--;
+        }
+        ver = verticalPosition-1;
+        hor = horizontalPosition-1;
+        while(ver>=0&&hor>=0){//upleft
+            try{upLeft = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            ver--;
+            hor--;
+        }
+        ver = verticalPosition-1;
+        hor = horizontalPosition+1;
+        while(ver>=0&&hor<8){//upright
+            try{upRight = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            ver--;
+            hor++;
+        }
+        if(upRight==true||upLeft==true||downRight==true||downLeft==true){
+            forReturn = true;
+        }
+        /*System.out.println(upRight);
+        System.out.println(upLeft);
+        System.out.println(downRight);
+        System.out.println(downLeft);*/
+        return forReturn;
+    }
+    private boolean checkRooks(Pieces toBeCheck){//return false if cannot protect the king
+        boolean forReturn = false;
+        boolean up = false;//true if can save the king
+        boolean down = false;
+        boolean left = false;
+        boolean right = false;
+        int verticalPosition = toBeCheck.position[0];
+        int horizontalPosition=toBeCheck.position[1];
+        int ver = verticalPosition-1;
+        int hor = horizontalPosition;
+        while(ver>=0){//up
+            try{up = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            ver--;
+        }
+        ver=verticalPosition+1;
+        while(ver<8){//down
+            try{down = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            ver++;
+        }
+        ver = verticalPosition;
+        hor = horizontalPosition+1;
+        while(hor<8){//right
+            try{right = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            hor++;
+        }
+        hor = horizontalPosition-1;
+        while(hor>=0){//left
+            try{left = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            catch(BlockedException e){break;}
+            hor--;
+        }
+        if(right==true||left==true||up==true||down==true){
+            forReturn = true;
+        }
+        return forReturn;
     }
     private boolean isCheck(Pieces king){//return true if is checked by the enemy
         boolean forReturn = false;
@@ -350,14 +679,14 @@ public class PieceGroup
         int position7[] = {verticalPosition+2,horizontalPosition+1};
         int position8[] = {verticalPosition+1,horizontalPosition+2};
         int[] potentialPosition[]={position1,position2,position3,position4,position5,position6,position7,position8};
-         for(int i=0;i<8;i++){
-         try{
-            if(Board.getBoard()[potentialPosition[i][0]][potentialPosition[i][1]].name.substring(1).equals("KT")&&
-                !(Board.getBoard()[potentialPosition[i][0]][potentialPosition[i][1]].color.equals(king.color)))
-                return true;
-         }
-         catch(NullPointerException e ){}
-         catch(ArrayIndexOutOfBoundsException e){}
+        for(int i=0;i<8;i++){
+             try{
+                 if(Board.getBoard()[potentialPosition[i][0]][potentialPosition[i][1]].name.substring(1).equals("KT")&&
+                 !(Board.getBoard()[potentialPosition[i][0]][potentialPosition[i][1]].color.equals(king.color)))
+                    return true;
+             }
+             catch(NullPointerException e ){}
+             catch(ArrayIndexOutOfBoundsException e){}
         }
         return false;
     }
@@ -402,28 +731,4 @@ public class PieceGroup
         cut[1]=command.substring(8,10);
         return cut;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

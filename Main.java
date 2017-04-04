@@ -15,7 +15,10 @@ public class Main
             if(command.equalsIgnoreCase("quit")){
                 check = false;
             }
-            game.run(command);
+            try{game.run(command);}
+            catch(CheckmateException e){
+                check = false;
+            }
         }
     }
 }

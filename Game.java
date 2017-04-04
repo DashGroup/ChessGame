@@ -20,9 +20,14 @@ public class Game
             return pBlack;
         }
     }
-    public void run(String command){
-        board.run(command);
-        turn = PieceGroup.getTurn();
+    public void run(String command)throws CheckmateException{
+        try{
+            board.run(command);
+            turn = PieceGroup.getTurn();
+        }
+        catch(CheckmateException e){
+            throw e;
+        }
     }
     public String toString(){
         String str = board.toString();

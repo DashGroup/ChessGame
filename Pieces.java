@@ -3,7 +3,6 @@ public abstract class Pieces
     protected String name;
     protected int[] position= new int[2];
     protected String color;
-    protected boolean alive;
     protected boolean ifMove;
     protected int movementNumCount;
     protected int stayTurn;
@@ -14,12 +13,10 @@ public abstract class Pieces
     }
     public boolean isAllowedToMove(int[] command){
         boolean check=false;
-        if(followsBasicRules(command)){
+        if(followsBasicRules(command))
             check=true;
-        }
-        else if(followsExceptionalRules(command)){
-            check = true;
-        }
+        else if(followsExceptionalRules(command))
+            check = true;      
         if(check==true){
             movementNumCount++;
             stayTurn=1;
@@ -30,7 +27,6 @@ public abstract class Pieces
          position[0] = first;
          position[1] = second;
     }
-    public boolean ifAlive(){return true;}
     public int[] convertor(String position){
         int[] arr = new int[2];
         int first = position.charAt(0);

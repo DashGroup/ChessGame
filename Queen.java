@@ -1,57 +1,73 @@
 public class Queen extends Pieces
 { 
     public boolean followsBasicRules(int[] command){
-        int newPosition1=position[0];
-        int newPosition2=position[1];
-        int distanceUpAndDown = command[0]- position[0];
-        int distanceLeftAndRight = command[1]- position[1];
-        Pieces inWay=null;
-        if(Math.abs(distanceUpAndDown) == Math.abs(distanceLeftAndRight)){
+        return testBlocks(command);
+    }
+    public boolean followsExceptionalRules(int[] command){
+        return false;
+    }
+    public boolean testBlocks(int[]command)
+    {
+        int verticalDistance = command[0]- position[0];
+        int horizontalDistance = command[1]- position[1];
+        if(Math.abs(verticalDistance) == Math.abs(horizontalDistance)){
+            return checkInwayDiagonal(command,verticalDistance,horizontalDistance);
+        }
+        else if((verticalDistance==0&&horizontalDistance!=0)||(horizontalDistance==0&&verticalDistance!=0))
+        {
+            return checkInwayVerticalHorizontal(command,verticalDistance,horizontalDistance);
+        }
+        return false;
+    }
+    public boolean checkInwayDiagonal(int[]command,int verticalDistance, int horizontalDistance)
+    {
+            int checkPositionRow=position[0];
+            int checkPositionColumn=position[1];
+            Pieces inWay=null;
             int i=0;
-            while(i<(Math.abs(distanceUpAndDown)-1)){
-               if(distanceUpAndDown>0 && distanceLeftAndRight>0){
-                  inWay=Board.getBoard()[++newPosition1][++newPosition2];}
-               else if(distanceUpAndDown>0 &&distanceLeftAndRight<0){
-                  inWay=Board.getBoard()[++newPosition1][--newPosition2];}
-               else if(distanceUpAndDown<0 && distanceLeftAndRight<0){
-                  inWay=Board.getBoard()[--newPosition1][--newPosition2];}
-               else if(distanceUpAndDown<0 && distanceLeftAndRight>0){
-                  inWay=Board.getBoard()[--newPosition1][++newPosition2];}
+            while(i<(Math.abs(verticalDistance)-1)){
+               if(verticalDistance>0)
+                   ++checkPositionRow;
+               else
+                   --checkPositionRow;
+               if(horizontalDistance>0)
+                   ++checkPositionColumn;
+               else
+                   --checkPositionColumn;
+               inWay=Board.getBoard()[checkPositionRow][checkPositionColumn];
                if(inWay!=null)
                  return false;
                i++;
             }
             return true;
-        }
-        else if((distanceUpAndDown==0&& distanceLeftAndRight!=0 )||( 
-        distanceLeftAndRight==0 && distanceUpAndDown!=0)){
+    }
+    public boolean checkInwayVerticalHorizontal(int[]command,int verticalDistance, int horizontalDistance)
+    {
+            int checkPositionRow=position[0];
+            int checkPositionColumn=position[1];
+            Pieces inWay=null;
             int count=0;
-            if(distanceUpAndDown!=0)
-               count=Math.abs(distanceUpAndDown);
+            if(verticalDistance!=0)
+               count=Math.abs(verticalDistance);
             else 
-               count=Math.abs(distanceLeftAndRight);
+               count=Math.abs(horizontalDistance);
             int i=0;
             while(i<(Math.abs(count)-1)){
-              if(distanceUpAndDown<0 && distanceLeftAndRight==0)
-                inWay=Board.getBoard()[--newPosition1][newPosition2]; 
-              else if(distanceUpAndDown>0 && distanceLeftAndRight==0)
-                inWay=Board.getBoard()[++newPosition1][newPosition2];
-              else if(distanceUpAndDown==0 && distanceLeftAndRight>0)
-                inWay=Board.getBoard()[newPosition1][++newPosition2];
-              else if(distanceUpAndDown==0 && distanceLeftAndRight<0)
-                inWay=Board.getBoard()[newPosition1][--newPosition2];
+              if(verticalDistance>0)
+                   ++checkPositionRow;
+               else if(verticalDistance<0)
+                   --checkPositionRow; 
+              if(horizontalDistance>0)
+                   ++checkPositionColumn;
+               else if(horizontalDistance<0)
+                   --checkPositionColumn;
+              inWay=Board.getBoard()[checkPositionRow][checkPositionColumn]; 
               if(inWay!=null)
                  return false;           
               i++;
             }    
             return true;
-        }
-        return false;
     }
-    public boolean followsExceptionalRules(int[] command){
-        return false;
-    }
-
     public void setProperty(String input,String name,Pieces piece,String color){
         position=convertor(input);
         this.name=name;

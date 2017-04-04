@@ -23,33 +23,44 @@ public class King extends Pieces
             check = isBlockOfKing(command);
             if(check){
                 Pieces rookN = getRook(command[1]);
-                if(rookN!=null){
-                    if(rookN.name.equals("WRK")||rookN.name.equals("BRK")){
-                        if(rookN.movementNumCount==0){
-                            check = true;
-                            int position1 = rookN.position[0];
-                            int position2 = rookN.position[1];
-                            Board.getBoard()[position1][position2] = null;
-                            if(position2==7){
-                                Board.getBoard()[position1][5]=rookN;
-                                rookN.setPosition(position1,5);
-                                rookN.movementNumCount++;
-                            }
-                            else if(position2==0){
-                                Board.getBoard()[position1][3]=rookN;
-                                rookN.setPosition(position1,3);
-                                rookN.movementNumCount++;
-                            }
-                        }
-                    }
-                }
-                else{
-                    check = false;
-                }
+                isRookOnPosition(command);
             }
         }
-       
         return check;
+    }
+    private boolean isRookOnPosition(int[] command){
+         Pieces rookN = getRook(command[1]);
+         boolean check = false;
+         if(rookN!=null){
+             if(rookN.name.equals("WRK")||rookN.name.equals("BRK")){
+                rookNmovementNumCount(command);
+             }
+         }
+         else{
+              check = false;
+         }
+         return check;
+    }
+    private int rookNmovementNumCount(int[] command){
+        Pieces rookN = getRook(command[1]);
+        boolean check = false;
+        if(rookN.movementNumCount==0){
+            check = true;
+            int position1 = rookN.position[0];
+            int position2 = rookN.position[1];
+            Board.getBoard()[position1][position2] = null;
+            if(position2==7){
+                Board.getBoard()[position1][5]=rookN;
+                rookN.setPosition(position1,5);
+                rookN.movementNumCount++;
+            }
+            else if(position2==0){
+                Board.getBoard()[position1][3]=rookN;
+                rookN.setPosition(position1,3);
+                rookN.movementNumCount++;
+            }
+        }
+        return  rookN.movementNumCount;
     }
     private Pieces getRook(int dividedCommand){
         Pieces forReturn;
