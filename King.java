@@ -28,20 +28,14 @@ public class King extends Pieces
         }
         return check;
     }
-    private boolean isRookOnPosition(int[] command){
-         Pieces rookN = getRook(command[1]);
-         boolean check = false;
-         if(rookN!=null){
-             if(rookN.name.equals("WRK")||rookN.name.equals("BRK")){
-                rookNmovementNumCount(command);
-             }
-         }
-         else{
-              check = false;
-         }
-         return check;
+    private void isRookOnPosition(int[] command){
+        Pieces rookN = getRook(command[1]);
+        boolean check = false;
+        if(rookN!=null){
+            if(rookN.name.equals("WRK")||rookN.name.equals("BRK")){rookNmovementNumCount(command);}
+        }
     }
-    private int rookNmovementNumCount(int[] command){
+    private void rookNmovementNumCount(int[] command){
         Pieces rookN = getRook(command[1]);
         boolean check = false;
         if(rookN.movementNumCount==0){
@@ -60,25 +54,16 @@ public class King extends Pieces
                 rookN.movementNumCount++;
             }
         }
-        return  rookN.movementNumCount;
     }
     private Pieces getRook(int dividedCommand){
         Pieces forReturn;
         if(dividedCommand==6){
-            if(color.equalsIgnoreCase("white")){
-                forReturn = Board.getBoard()[7][7];
-            }
-            else{
-                forReturn = Board.getBoard()[0][7];
-            }
+            if(color.equalsIgnoreCase("white")){forReturn = Board.getBoard()[7][7];}
+            else{forReturn = Board.getBoard()[0][7];}
         }
         else{
-            if(color.equalsIgnoreCase("white")){
-                forReturn = Board.getBoard()[7][0];
-            }
-            else{
-                forReturn = Board.getBoard()[0][0];
-            }
+            if(color.equalsIgnoreCase("white")){forReturn = Board.getBoard()[7][0];}
+            else{forReturn = Board.getBoard()[0][0];}
         }
         return forReturn;
     }
@@ -92,12 +77,8 @@ public class King extends Pieces
         for(int i=0;i<limitMax;i++){
             column = column+unitColumn;
             int checkPosition[] = {command[0],column};
-            if(Board.getBoard()[command[0]][column]!=null){
+            if(Board.getBoard()[command[0]][column]!=null||isThreatened(checkPosition)){
                 checkForReturn=false;
-                break;
-            }
-            if(isThreatened(checkPosition)){
-                checkForReturn = false;
                 break;
             }
         }
