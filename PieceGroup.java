@@ -434,7 +434,7 @@ public class PieceGroup
         int ver = verticalPosition+1;
         int hor = horizontalPosition+1;
         while(ver<8&&hor<8){//downright
-            try{downRight = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{downRight = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(downRight==true){break;}}
             catch(BlockedException e){break;}
             ver++;
             hor++;
@@ -442,7 +442,7 @@ public class PieceGroup
         ver = verticalPosition+1;
         hor = horizontalPosition-1;
         while(ver<8&&hor>=0){//downleft
-            try{downLeft = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{downLeft = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(downLeft==true){break;}}
             catch(BlockedException e){break;}
             ver++;
             hor--;
@@ -450,7 +450,7 @@ public class PieceGroup
         ver = verticalPosition-1;
         hor = horizontalPosition-1;
         while(ver>=0&&hor>=0){//upleft
-            try{upLeft = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{upLeft = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(upLeft==true){break;}}
             catch(BlockedException e){break;}
             ver--;
             hor--;
@@ -458,7 +458,7 @@ public class PieceGroup
         ver = verticalPosition-1;
         hor = horizontalPosition+1;
         while(ver>=0&&hor<8){//upright
-            try{upRight = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{upRight = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(upRight==true){break;}}
             catch(BlockedException e){break;}
             ver--;
             hor++;
@@ -466,10 +466,6 @@ public class PieceGroup
         if(upRight==true||upLeft==true||downRight==true||downLeft==true){
             forReturn = true;
         }
-        /*System.out.println(upRight);
-        System.out.println(upLeft);
-        System.out.println(downRight);
-        System.out.println(downLeft);*/
         return forReturn;
     }
     private boolean checkRooks(Pieces toBeCheck){//return false if cannot protect the king
@@ -483,26 +479,26 @@ public class PieceGroup
         int ver = verticalPosition-1;
         int hor = horizontalPosition;
         while(ver>=0){//up
-            try{up = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{up = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(up==true){break;}}
             catch(BlockedException e){break;}
             ver--;
         }
         ver=verticalPosition+1;
         while(ver<8){//down
-            try{down = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{down = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(down==true){break;}}
             catch(BlockedException e){break;}
             ver++;
         }
         ver = verticalPosition;
         hor = horizontalPosition+1;
         while(hor<8){//right
-            try{right = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{right = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(right==true){break;}}
             catch(BlockedException e){break;}
             hor++;
         }
         hor = horizontalPosition-1;
         while(hor>=0){//left
-            try{left = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);}
+            try{left = determineBooleansForBishopsAndRooks(toBeCheck,ver,hor);if(left==true){break;}}
             catch(BlockedException e){break;}
             hor--;
         }
