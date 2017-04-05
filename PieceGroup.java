@@ -22,7 +22,6 @@ public class PieceGroup
     private int lastCount = 1;
     private int coordinationForOnce[] =new int[2];
     private boolean checkTenLengthCommandValidable = true;
-    ArrayList<Pieces> piecesToBeCheck = new ArrayList<Pieces>(16);
     PieceGroup(String input){
         if(input.equals ("white")){
             knight1.setProperty("B1","WKT",knight1,"white");
@@ -228,37 +227,60 @@ public class PieceGroup
             if((position[0]>=0&&position[0]<8)&&(position[1]>=0&&position[1]<8)){
                 if(Board.getBoard()[position[0]][position[1]]==null||(!Board.getBoard()[position[0]][position[1]].color.equals(king.color))){
                     if(Board.getBoard()[position[0]][position[1]]!=null){
-                        if(!Board.getBoard()[position[0]][position[1]].color.equals(king.color)){
-                            potentialEatenOne = Board.getBoard()[position[0]][position[1]];
-                            Board.getBoard()[position[0]][position[1]]=king;
-                            Board.getBoard()[position[0]][position[1]]=null;
-                            king.setPosition(position[0],position[1]);
-                            if(isCheck(king)){checkCount++;}
-                            Board.getBoard()[verticalPosition][horizontalPosition]=king;
-                            king.setPosition(verticalPosition,horizontalPosition);
-                            Board.getBoard()[position[0]][position[1]]=potentialEatenOne;
-                        }
+                        if(!Board.getBoard()[position[0]][position[1]].color.equals(king.color)){checkCount = calculateCheckCount2(king,checkCount,position);}
                         else{checkCount++;}
                     }
-                    else{
-                        Board.getBoard()[position[0]][position[1]]=king;
-                        Board.getBoard()[verticalPosition][horizontalPosition]=null;
-                        king.setPosition(position[0],position[1]);
-                        if(isCheck(king)){checkCount++;}
-                        Board.getBoard()[verticalPosition][horizontalPosition]=king;
-                        king.setPosition(verticalPosition,horizontalPosition);
-                        Board.getBoard()[position[0]][position[1]]=null;
-                    }
+                    else{checkCount = calculateCheckCount(king,checkCount,position);}
                 }
                 else{checkCount++;}
             }   
             else{checkCount++;}
         }
-        if(checkCount==8){forReturn = true;}
+        boolean check2 = false;
+        if((king.position[0]==7||king.position[0]==0)&&(king.position[1]==4)){
+            if(king.movementNumCount==0){
+                if(Board.getBoard()[king.position[0]][0]!=null){
+                    if(Board.getBoard()[king.position[0]][0].name.substring(1).equals("RK")&&Board.getBoard()[king.position[0]][0].color.equals(king.color)
+                    &&Board.getBoard()[king.position[0]][0].movementNumCount==0){
+                        Pieces rookN = Board.getBoard()[king.position[0]][0];
+                        int[] checkPosition={7,2};
+                        if(king.isAllowedToMove(checkPosition)){
+                            check2=true;
+                            Board.getBoard()[7][4]=null;
+                            Board.getBoard()[7][0]=rookN;
+                            Board.getBoard()[7][0].setPosition(7,0);
+                            Board.getBoard()[7][0].movementNumCount--;
+                        }   
+                    }
+                }
+            }
+        }
+        if(check2==false){checkCount++;}
+        check2=false;
+        if((king.position[0]==7||king.position[0]==0)&&(king.position[1]==4)){
+            if(king.movementNumCount==0){
+                if(Board.getBoard()[king.position[0]][7]!=null){
+                    if(Board.getBoard()[king.position[0]][7].name.substring(1).equals("RK")&&Board.getBoard()[king.position[0]][7].color.equals(king.color)
+                    &&Board.getBoard()[king.position[0]][7].movementNumCount==0){Pieces rookN = Board.getBoard()[king.position[0]][0];
+                        int[] checkPosition={7,6};
+                        if(king.isAllowedToMove(checkPosition)){
+                            check2=true;
+                            Board.getBoard()[7][5]=null;
+                            Board.getBoard()[7][7]=rookN;
+                            Board.getBoard()[7][7].setPosition(7,7);
+                            Board.getBoard()[7][7].movementNumCount--;
+                        }   
+                    }
+                }
+            }
+        }
+        if(check2==false){checkCount++;}
+        if(checkCount==10){forReturn = true;}
         return forReturn;
     }
     private boolean checkOtherPieces(Pieces king){//return true if no pieces can save the king
         boolean forReturn = true;
+        ArrayList<Pieces> piecesToBeCheck = new ArrayList<Pieces>(16);
         for(int i =0;i<8;i++){
             for(int k = 0;k<8;k++){
                 if(Board.getBoard()[i][k]!=null){
@@ -268,28 +290,16 @@ public class PieceGroup
                 }
             }
         }
-        ArrayList fiveKindsPiecesCheck = new ArrayList(piecesToBeCheck.size());
+        ArrayList<Boolean> fiveKindsPiecesCheck = new ArrayList<>(piecesToBeCheck.size());
         for(int i = 0;i<piecesToBeCheck.size();i++){
             Pieces toBeCheck = piecesToBeCheck.get(i);
-            if(toBeCheck.name.substring(1).equals("PN")){
-                fiveKindsPiecesCheck.add(checkPawns(toBeCheck));
-            }
-            else if(toBeCheck.name.substring(1).equals("QN")){
-                fiveKindsPiecesCheck.add(checkQueens(toBeCheck));
-            }
-            else if(toBeCheck.name.substring(1).equals("KT")){
-                fiveKindsPiecesCheck.add(checkKnights(toBeCheck));
-            }
-            else if(toBeCheck.name.substring(1).equals("RK")){
-                fiveKindsPiecesCheck.add(checkRooks(toBeCheck));
-            }
-            else if(toBeCheck.name.substring(1).equals("BP")){
-                fiveKindsPiecesCheck.add(checkBishops(toBeCheck));
-            }
+            if(toBeCheck.name.substring(1).equals("PN")){fiveKindsPiecesCheck.add(checkPawns(toBeCheck));}
+            else if(toBeCheck.name.substring(1).equals("QN")){fiveKindsPiecesCheck.add(checkQueens(toBeCheck));}
+            else if(toBeCheck.name.substring(1).equals("KT")){fiveKindsPiecesCheck.add(checkKnights(toBeCheck));}
+            else if(toBeCheck.name.substring(1).equals("RK")){fiveKindsPiecesCheck.add(checkRooks(toBeCheck));}
+            else if(toBeCheck.name.substring(1).equals("BP")){fiveKindsPiecesCheck.add(checkBishops(toBeCheck));}
         }
-        if((fiveKindsPiecesCheck.contains(true))){
-            forReturn = false;
-        }
+        if((fiveKindsPiecesCheck.contains(true))){forReturn = false;}
         return forReturn;
     }
     private boolean checkPawns(Pieces toBeCheck){//return false if cannot protect the king
