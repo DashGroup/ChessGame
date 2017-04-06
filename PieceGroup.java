@@ -244,12 +244,16 @@ public class PieceGroup
                     &&Board.getBoard()[king.position[0]][0].movementNumCount==0){
                         Pieces rookN = Board.getBoard()[king.position[0]][0];
                         int[] checkPosition={7,2};
+                        int kingStayTurn = king.stayTurn;
+                        int rookStayTurn = rookN.stayTurn;
                         if(king.isAllowedToMove(checkPosition)){
                             check2=true;
                             Board.getBoard()[7][4]=null;
                             Board.getBoard()[7][0]=rookN;
                             Board.getBoard()[7][0].setPosition(7,0);
                             Board.getBoard()[7][0].movementNumCount--;
+                            Board.getBoard()[7][0].stayTurn = rookStayTurn;
+                            king.stayTurn = kingStayTurn;
                         }   
                     }
                 }
@@ -261,14 +265,19 @@ public class PieceGroup
             if(king.movementNumCount==0){
                 if(Board.getBoard()[king.position[0]][7]!=null){
                     if(Board.getBoard()[king.position[0]][7].name.substring(1).equals("RK")&&Board.getBoard()[king.position[0]][7].color.equals(king.color)
-                    &&Board.getBoard()[king.position[0]][7].movementNumCount==0){Pieces rookN = Board.getBoard()[king.position[0]][0];
+                    &&Board.getBoard()[king.position[0]][7].movementNumCount==0){
+                        Pieces rookN = Board.getBoard()[king.position[0]][0];
                         int[] checkPosition={7,6};
+                        int kingStayTurn = king.stayTurn;
+                        int rookStayTurn = rookN.stayTurn;
                         if(king.isAllowedToMove(checkPosition)){
                             check2=true;
                             Board.getBoard()[7][5]=null;
                             Board.getBoard()[7][7]=rookN;
                             Board.getBoard()[7][7].setPosition(7,7);
                             Board.getBoard()[7][7].movementNumCount--;
+                            Board.getBoard()[7][0].stayTurn = rookStayTurn;
+                            king.stayTurn = kingStayTurn;
                         }   
                     }
                 }
