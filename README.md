@@ -44,6 +44,14 @@ Format:   'GOTO A2,A3' or 'QUIT' only!
 
 White turn ==>
 
+
+For Windows version, first put all the classes in D:/
+Then open the cmd.exe
+Then follow the step below: (things inside " ")
+1) enter "D:/"
+2) enter "javac Main.java"
+3) enter "java Main"
+Then you should see exactly the same as the Mac's one
 AUTHORS:DashGroup
 
 USER INSTRUCTIONS:
