@@ -52,8 +52,15 @@ Then follow the step below: (things inside " ")
 2) enter "javac Main.java"
 3) enter "java Main"
 Then you should see exactly the same as the Mac's one
+
 AUTHORS:DashGroup
 
 USER INSTRUCTIONS:
 The Main class is the client class that should be run Please type in commands with the form "GOTO A2,A3" or "QUIT" or the name of the 
 pieces that you wang your pawn to change when it reaches the boundary of the other player only.
+
+Contributors: Jeremy Chen, Dash Huang, Scott Du, Tracy Liu.
+
+Known issues: Cannot draw this game if each player cannot make a checkmate.
+
+Please find the file "checkList.png" among the uploaded files to see the function of our game!
