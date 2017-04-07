@@ -17,6 +17,7 @@ HOW TO START THIS PROJECT:
 2) Go to the folder of the downloaded code
 3) Type in javac *.java
 4) Type in java Main
+
 If you want to delete those files, you can type in del *.class (in the folder)
 
 After that you will see below:
