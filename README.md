@@ -28,7 +28,7 @@ Format:   'GOTO A2,A3' or 'QUIT' only!
 
 [BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	
 
-[     ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
+[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
 
 [   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
 
@@ -47,4 +47,5 @@ White turn ==>
 AUTHORS:DashGroup
 
 USER INSTRUCTIONS:
-The Main class is the client class that should be run Please type in commands with the form "GOTO A2,A3" or "QUIT" only.
+The Main class is the client class that should be run Please type in commands with the form "GOTO A2,A3" or "QUIT" or the name of the 
+pieces that you wang your pawn to change when it reaches the boundary of the other player only.
