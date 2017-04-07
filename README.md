@@ -33,4 +33,6 @@ CONTRIBUTORS: Jeremy Chen, Dash Huang, Scott Du, Tracy Liu.
 
 KNOWN ISSUES: Cannot draw this game if each player cannot make a checkmate.
 
+INCLUDED FUNCTION:
+
 ![alt text](https://github.com/DashGroup/ChessGame/blob/master/checklist.png "Check List")
