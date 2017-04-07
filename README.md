@@ -4,6 +4,7 @@ Tell the reader (someone who does not know anything about this project)
 all he/she needs to know. The comments should usually include at least:
 ------------------------------------------------------------------------
 (checklist.png is in the master repository)
+
 PROJECT TITLE: Chess Game
 
 PURPOSE OF PROJECT:To play chess.
@@ -42,7 +43,6 @@ Format:   'GOTO A2,A3' or 'QUIT' only!
 
 
 White turn ==>
-
 
 AUTHORS:DashGroup
 
