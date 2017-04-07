@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class Main
 {
-    public static void run(){
+    public static void main(String[] args){
         Game game = new Game();
         Scanner in = new Scanner(System.in);
         System.out.println("Format:   'GOTO A2,A3' or 'QUIT' or the name of the pawn "+"\n"+ "you want to change only!");
