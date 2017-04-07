@@ -9,19 +9,17 @@ PROJECT TITLE: Chess Game
 
 PURPOSE OF PROJECT:To play chess.
 
-VERSION or DATE: March 28,2017
+VERSION or DATE: April 7,2017
 
 HOW TO START THIS PROJECT:
-Sample:
-bogon:/ dusongbo$ cd Users
 
-bogon:Users dusongbo$ cd dusongbo
+1) Open the terminal
+2) Go to the folder of the downloaded code
+3) Type in javac *.java
+4) Type in java Main
+If you want to delete those files, you can type in del *.class (in the folder)
 
-bogon:~ dusongbo$ cd ChessGame
-
-bogon:ChessGame dusongbo$ javac /Users/dusongbo/ChessGame/Bishop.java /Users/dusongbo/ChessGame/Board.java /Users/dusongbo/ChessGame/Game.java /Users/dusongbo/ChessGame/King.java /Users/dusongbo/ChessGame/Knight.java /Users/dusongbo/ChessGame/Main.java /Users/dusongbo/ChessGame/Pawns.java /Users/dusongbo/ChessGame/PieceGroup.java /Users/dusongbo/ChessGame/Pieces.java /Users/dusongbo/ChessGame/Player.java /Users/dusongbo/ChessGame/Queen.java /Users/dusongbo/ChessGame/Rook.java 
-
-bogon:ChessGame dusongbo$ java Main
+After that you will see below:
 
 Format:   'GOTO A2,A3' or 'QUIT' only!
 
@@ -45,22 +43,14 @@ Format:   'GOTO A2,A3' or 'QUIT' only!
 White turn ==>
 
 
-For Windows version, first put all the classes in D:/
-Then open the cmd.exe
-Then follow the step below: (things inside " ")
-1) enter "D:/"
-2) enter "javac Main.java"
-3) enter "java Main"
-Then you should see exactly the same as the Mac's one
-
 AUTHORS:DashGroup
 
 USER INSTRUCTIONS:
 The Main class is the client class that should be run Please type in commands with the form "GOTO A2,A3" or "QUIT" or the name of the 
 pieces that you wang your pawn to change when it reaches the boundary of the other player only.
 
-Contributors: Jeremy Chen, Dash Huang, Scott Du, Tracy Liu.
+CONTRIBUTORS: Jeremy Chen, Dash Huang, Scott Du, Tracy Liu.
 
-Known issues: Cannot draw this game if each player cannot make a checkmate.
+KNOWN ISSUES: Cannot draw this game if each player cannot make a checkmate.
 
 Please find the file "checkList.png" among the uploaded files to see the function of our game!
