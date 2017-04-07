@@ -21,27 +21,7 @@ If you want to delete those files, you can type in del *.class (in the folder)
 
 After that you will see below:
 
-Format:   'GOTO A2,A3' or 'QUIT' only!
-
-[BRK]	[BKT]	[BBP]	[BQN]	[BKG]	[BBP]	[BKT]	[BRK]	
-
-[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	[BPN]	
-
-[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
-
-[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
-
-[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
-
-[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	[   ]	
-
-[WPN]	[WPN]	[WPN]	[WPN]	[WPN]	[WPN]	[WPN]	[WPN]	
-
-[WRK]	[WKT]	[WBP]	[WQN]	[WKG]	[WBP]	[WKT]	[WRK]	
-
-
-White turn ==>
-
+![alt text](https://github.com/DashGroup/ChessGame/blob/master/Sample.png "Sample")
 
 AUTHORS:DashGroup
 
