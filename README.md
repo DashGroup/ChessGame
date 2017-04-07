@@ -32,7 +32,7 @@ pieces that you wang your pawn to change when it reaches the boundary of the oth
 
 CONTRIBUTORS: Jeremy Chen, Dash Huang, Scott Du, Tracy Liu.
 
-KNOWN ISSUES: Cannot draw this game if both players cannot make a checkmate.
+KNOWN ISSUES: Cannot draw in this game if both players cannot make a checkmate.
 
 INCLUDED FUNCTION:
 
